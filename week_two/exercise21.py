@@ -5,7 +5,7 @@ import random
 
 # takes in integer i and returns binary representation, if n length, for the integer.
 def intToBinary(i,n):
-    l = [0] * n
+    l = [0] * n # creates a list of zeros of n length
     if i == 0: return l
     index = 0
     while i:
