@@ -1,12 +1,11 @@
 import json
 import re
 
-
 with open('pizza-train.json') as json_data:
     #initalize
     data = json.load(json_data)
     #--takes all words and numbers, but removes all words with _ in between
-    regex = r'\b[^\W_|\w*_\w+]*\'?[^\W_]+\b'
+    regex = r'\b[^\W_]*\'?[^\W_]*\b'
     all_words = set()
     all_lines = []
     bag_of_words = [] # The big bag of words
@@ -41,3 +40,4 @@ with open('pizza-train.json') as json_data:
     print all_words
     print       
     print bag_of_words
+    
