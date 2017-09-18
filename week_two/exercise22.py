@@ -5,15 +5,15 @@ with open('pizza-train.json') as json_data:
     #initalize
     data = json.load(json_data)
     #--takes all words and numbers, but removes all words with _ in between
-    regex = r'\b[^\W_]*\'?[^\W_]*\b'
+    emoticons = '(?::|;|=)(?:-)?(?:\)|\(|D|P)'
+    regex = r'\b[^\W_]*\'?[^\W_]+\'?\b' + '|' + emoticons
     all_words = set()
     all_lines = []
     bag_of_words = [] # The big bag of words
     for d in data:
         # each request text is transfered to lower case letters and assign to the text variable
         text = d["request_text"].lower() 
-        emoticons = re.findall('(?::|;|=)(?:-)?(?:\)|\(|D|P)',text)
-        sentence = re.findall(regex,text) + emoticons #use both emoticons and the regex
+        sentence = re.findall(regex,text)  # use both emoticons and the regex
         word_count = {} # a container for each distinctive word in the text
         
         # iterate through the words and add the words to the variable all_words so that all_words contains all the words
@@ -25,7 +25,7 @@ with open('pizza-train.json') as json_data:
             else:
                 word_count[word] += 1
         all_lines.append(word_count)
-        
+
     # loop through all the dictonaries and add the word counts for each sentance to the 
     # matrix varible which is the big bag of words
     for line in all_lines:
@@ -40,4 +40,3 @@ with open('pizza-train.json') as json_data:
     print all_words
     print       
     print bag_of_words
-    
