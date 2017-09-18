@@ -1,6 +1,7 @@
 import json
 import re
 
+
 with open('pizza-train.json') as json_data:
     #initalize
     data = json.load(json_data)
