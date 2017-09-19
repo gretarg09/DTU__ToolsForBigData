@@ -16,10 +16,8 @@ x = np.linalg.solve(A, b)
 print "The solution to the linear matrix equation is: \n \n {} \n".format(x)
 
 # Check if the result make sense
-
 print "DOES THE RESULT MAKE SENSE? \n"
-
-# lets check the result by comparing the result to A.dot(x)
+#lets check the result by comparing the result of A.dot(x) to b
 print "The result from A.dot(x) is: \n \n {} \n".format(A.dot(x))
 
 
@@ -32,6 +30,8 @@ def feq(a,b):
         return 0
 
 isTheSame = True
+# Here we go through every float number in the result of the dot product A.dot(x)
+#   we use np.nditer to iter through the array and then we use the function feq to check if the float numbers are equal
 for i,number in enumerate(np.nditer(np.asarray(A.dot(x)))): 
     if feq(float(b[i]), float(number)) == 0:
         isTheSame = False
