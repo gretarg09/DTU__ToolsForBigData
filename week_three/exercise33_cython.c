@@ -657,8 +657,8 @@ static PyObject *__pyx_codeobj__2;
  * 
  * # Cython function to calculate the sum 1/1^2 + 1/2^2 + 1/3^2 + ... + 1/10000^2
  * def calculate(n):             # <<<<<<<<<<<<<<
- *     cdef float sum = 0.0
- *     cdef int i = 0
+ *     cdef float sum = 0.0 #static type declaration
+ *     cdef int i = 0 # static type declarations of the iterator variable
  */
 
 /* Python wrapper */
@@ -689,24 +689,24 @@ static PyObject *__pyx_pf_17exercise33_cython_calculate(CYTHON_UNUSED PyObject *
   /* "exercise33_cython.pyx":5
  * # Cython function to calculate the sum 1/1^2 + 1/2^2 + 1/3^2 + ... + 1/10000^2
  * def calculate(n):
- *     cdef float sum = 0.0             # <<<<<<<<<<<<<<
- *     cdef int i = 0
+ *     cdef float sum = 0.0 #static type declaration             # <<<<<<<<<<<<<<
+ *     cdef int i = 0 # static type declarations of the iterator variable
  *     for i in range(1,n+1):
  */
   __pyx_v_sum = 0.0;
 
   /* "exercise33_cython.pyx":6
  * def calculate(n):
- *     cdef float sum = 0.0
- *     cdef int i = 0             # <<<<<<<<<<<<<<
+ *     cdef float sum = 0.0 #static type declaration
+ *     cdef int i = 0 # static type declarations of the iterator variable             # <<<<<<<<<<<<<<
  *     for i in range(1,n+1):
  *         sum += 1/(i**2)
  */
   __pyx_v_i = 0;
 
   /* "exercise33_cython.pyx":7
- *     cdef float sum = 0.0
- *     cdef int i = 0
+ *     cdef float sum = 0.0 #static type declaration
+ *     cdef int i = 0 # static type declarations of the iterator variable
  *     for i in range(1,n+1):             # <<<<<<<<<<<<<<
  *         sum += 1/(i**2)
  *     return sum
@@ -719,7 +719,7 @@ static PyObject *__pyx_pf_17exercise33_cython_calculate(CYTHON_UNUSED PyObject *
     __pyx_v_i = __pyx_t_3;
 
     /* "exercise33_cython.pyx":8
- *     cdef int i = 0
+ *     cdef int i = 0 # static type declarations of the iterator variable
  *     for i in range(1,n+1):
  *         sum += 1/(i**2)             # <<<<<<<<<<<<<<
  *     return sum
@@ -748,8 +748,8 @@ static PyObject *__pyx_pf_17exercise33_cython_calculate(CYTHON_UNUSED PyObject *
  * 
  * # Cython function to calculate the sum 1/1^2 + 1/2^2 + 1/3^2 + ... + 1/10000^2
  * def calculate(n):             # <<<<<<<<<<<<<<
- *     cdef float sum = 0.0
- *     cdef int i = 0
+ *     cdef float sum = 0.0 #static type declaration
+ *     cdef int i = 0 # static type declarations of the iterator variable
  */
 
   /* function exit code */
@@ -812,8 +812,8 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * # Cython function to calculate the sum 1/1^2 + 1/2^2 + 1/3^2 + ... + 1/10000^2
  * def calculate(n):             # <<<<<<<<<<<<<<
- *     cdef float sum = 0.0
- *     cdef int i = 0
+ *     cdef float sum = 0.0 #static type declaration
+ *     cdef int i = 0 # static type declarations of the iterator variable
  */
   __pyx_tuple_ = PyTuple_Pack(3, __pyx_n_s_n, __pyx_n_s_sum, __pyx_n_s_i); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
@@ -930,8 +930,8 @@ PyMODINIT_FUNC PyInit_exercise33_cython(void)
  * 
  * # Cython function to calculate the sum 1/1^2 + 1/2^2 + 1/3^2 + ... + 1/10000^2
  * def calculate(n):             # <<<<<<<<<<<<<<
- *     cdef float sum = 0.0
- *     cdef int i = 0
+ *     cdef float sum = 0.0 #static type declaration
+ *     cdef int i = 0 # static type declarations of the iterator variable
  */
   __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_17exercise33_cython_1calculate, NULL, __pyx_n_s_exercise33_cython); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
