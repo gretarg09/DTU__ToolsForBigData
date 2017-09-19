@@ -12,6 +12,7 @@ def intToBinary(i,n):
     #   if the integer is even then the program adds 1 to the list l
     #   if the integer is odd then the program adds 0 to the list l
     while i:
+        # if modulus of 2 returns 1 then the number is odd
         if i % 2 == 1:
             l[index] = 1
         else:
