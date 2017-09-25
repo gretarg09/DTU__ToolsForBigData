@@ -2,6 +2,7 @@ import exercise33_python
 import exercise33_cython
 import timeit
 
+# Use the timeit module in python to time the exection of both a python and cython version of the same program
 py = timeit.timeit('exercise33_python.calculate(10000)', setup='import exercise33_python', number=500)
 cy = timeit.timeit('exercise33_cython.calculate(10000)', setup='import exercise33_cython', number=500)
 

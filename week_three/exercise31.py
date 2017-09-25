@@ -5,12 +5,15 @@ matrix = [ map(int,line.split(',')) for line in f if line.strip() != "" ]
 
 print "The input matrix is: \n \n {} \n".format(np.matrix(matrix))
 
+# Extract the all the input  matrix except the last column
 A = np.matrix(matrix)[:,:-1]
+# Extract the  last  column  of  the  input  matrix 
 b = np.array(matrix)[:,-1]
 
 print "The matrix A: \n \n {} \n".format(A)
 print "The matrix B: \n \n {} \n".format(b)
 
+# use linalg to solve the equation Ax=b (find x)
 x = np.linalg.solve(A, b)
 
 print "The solution to the linear matrix equation is: \n \n {} \n".format(x)
