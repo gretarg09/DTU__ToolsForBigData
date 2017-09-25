@@ -5,7 +5,7 @@ matrix = [ map(int,line.split(',')) for line in f if line.strip() != "" ]
 
 print "The input matrix is: \n \n {} \n".format(np.matrix(matrix))
 
-# Extract the all the input  matrix except the last column
+# Extract all the input  matrix except the last column
 A = np.matrix(matrix)[:,:-1]
 # Extract the  last  column  of  the  input  matrix 
 b = np.array(matrix)[:,-1]
@@ -16,7 +16,7 @@ print "The matrix B: \n \n {} \n".format(b)
 # use linalg to solve the equation Ax=b (find x)
 x = np.linalg.solve(A, b)
 
-print "The solution to the linear matrix equation is: \n \n {} \n".format(x)
+print "The solution to the linear matrix equation is: \n \n x =  {} \n".format(x)
 
 # Check if the result make sense
 print "DOES THE RESULT MAKE SENSE? \n"
@@ -24,7 +24,7 @@ print "DOES THE RESULT MAKE SENSE? \n"
 print "The result from A.dot(x) is: \n \n {} \n".format(A.dot(x))
 
 
-# To check if the numbers in the two arrays are the same we created this funciton
+# To check if the numbers in the two arrays are the same we created this function
 # Re: Comparing floats for equality in Python
 def feq(a,b):
     if abs(a-b)<0.00000001:
@@ -41,6 +41,6 @@ for i,number in enumerate(np.nditer(np.asarray(A.dot(x)))):
         break
 
 if isTheSame:
-    print "Which is the same as b"
+    print "Which is the same as b \n"
 else:
-    print "Which is not the same as b"
+    print "Which is not the same as b\n"
