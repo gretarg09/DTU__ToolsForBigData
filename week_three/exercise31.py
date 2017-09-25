@@ -44,3 +44,6 @@ if isTheSame:
     print "Which is the same as b \n"
 else:
     print "Which is not the same as b\n"
+
+# We also use np.allclose to check if the solution is correct:
+print "np.allclose(np.dot(A, x), b) returns {} \n".format(np.allclose(np.dot(A, x), b))
