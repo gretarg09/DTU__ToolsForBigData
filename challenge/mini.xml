@@ -9978,23 +9978,3 @@ The genes [[OXTR]], [[CD38]], [[COMT]], [[DRD4]], [[DRD5]], [[IGF2]], [[GABRB2]]
       <sha1>hhwr0txt4dnjja2ff0eae6j0olxsjn0</sha1>
     </revision>
   </page>
-  <page>
-    <title>Ayn Rand</title>
-    <ns>0</ns>
-    <id>339</id>
-    <revision>
-      <id>796298763</id>
-      <parentid>796293746</parentid>
-      <timestamp>2017-08-19T21:28:02Z</timestamp>
-      <contributor>
-        <username>RL0919</username>
-        <id>327763</id>
-      </contributor>
-      <comment>/* Academic reaction */ redirects back here</comment>
-      <model>wikitext</model>
-      <format>text/x-wiki</format>
-      <text xml:space="preserve">{{Use mdy dates|date=June 2013}}
-{{Good article}}
-{{Infobox writer
-| name = Ayn Rand
-| image = Ayn Rand.jpg
