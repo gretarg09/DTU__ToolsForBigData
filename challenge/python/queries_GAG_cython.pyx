@@ -43,64 +43,65 @@ def validate(matches,current_pos,level):
     
     #t4 = time.time()
     #print t4-t3
+    
+def __main__():           
+    #pattern = 'cats[0,10]are[0,10]to'
+    pattern = 'or[0,10]or[0,10]or'
+    #pattern = 'when[15,25]republic[15,25]along'
+
+    fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_cat_preproc.xml"
+    #fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_cat_preproc_double.xml"
+    #fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_a_preproc.xml"
+
+    t0 = time.time()
+
+    counter = 1
+
+    # open a file to process the data
+    with open(fileUri) as f:
+        for line in f:
+            incoming = line
+            query = incoming
             
-#pattern = 'cats[0,10]are[0,10]to'
-pattern = 'or[0,10]or[0,10]or'
-#pattern = 'when[15,25]republic[15,25]along'
+            pattern_container = getPattern(pattern)
+            result = set()
 
-fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_cat_preproc.xml"
-#fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_cat_preproc_double.xml"
-#fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_a_preproc.xml"
+            #print "The query is {}".format(query)
+            #print "The keys are {} \n".format(pattern_container["keys"])
 
-t0 = time.time()
+            #t3 = time.time()
+            
+            indexes = []
+            for key in pattern_container["keys"]:
+                indexes.append([m.start() for m in re.finditer('(?={})'.format(key), query)])
 
-counter = 1
+            pattern_container["index"] = indexes
 
-# open a file to process the data
-with open(fileUri) as f:
-    for line in f:
-        incoming = line
-        query = incoming
-        
-        pattern_container = getPattern(pattern)
-        result = set()
+            #t4 = time.time()
+            #print "index time {}".format(t4-t3)
+            
+            #print "\n container \n"
+            #print pattern_container    
 
-        #print "The query is {}".format(query)
-        #print "The keys are {} \n".format(pattern_container["keys"])
+            #print "start \n"
+            
+            # going through the first list
+            for i in pattern_container["index"][0]:
+                validate([i],i,1)
+            
+            #print "The result is : \n"
+            #if result:
+            #    for i in result:
+            #        print i
+            #else:
+            #    print "no match in this text"
 
-        #t3 = time.time()
-        
-        indexes = []
-        for key in pattern_container["keys"]:
-            indexes.append([m.start() for m in re.finditer('(?={})'.format(key), query)])
+            print counter
+            counter = counter + 1
+            
+            # delete from memory
+            del result
+            del incoming
 
-        pattern_container["index"] = indexes
-
-        #t4 = time.time()
-        #print "index time {}".format(t4-t3)
-        
-        #print "\n container \n"
-        #print pattern_container    
-
-        #print "start \n"
-        
-        # going through the first list
-        for i in pattern_container["index"][0]:
-            validate([i],i,1)
-        
-        #print "The result is : \n"
-        #if result:
-        #    for i in result:
-        #        print i
-        #else:
-        #    print "no match in this text"
-
-        print counter
-        counter = counter + 1
-        
-        # delete from memory
-        del result
-        del incoming
-
-t1 = time.time()
-print "\nthe execution time was {}".format(t1-t0)
+    t1 = time.time()
+    print "\nthe execution time was {}".format(t1-t0)
