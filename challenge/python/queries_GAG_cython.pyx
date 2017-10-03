@@ -21,77 +21,62 @@ def getPattern(pattern):
     # add the last element onto the patterna container list
     return pattern_container
 
-def validate(matches,current_pos,level):
+cpdef validate(int pos_first_match, int current_pos, int level, int stop_level):
     #print level
-    indexes = [i for i in pattern_container["index"][level] if i > current_pos]
-    restrictions = pattern_container["restrictions"][level-1]
-    
-    #t3 =  time.time()
-    
-    for i in indexes:
-        previous_word = pattern_container["keys"][level-1]
-        if restrictions[0] <=  i -  (len(previous_word) + current_pos)  <= restrictions[1]:
-            incremented_matches = matches + [i]
-            if level  == len(pattern_container["keys"]) - 1:
-                start_index = incremented_matches[0]
-                end_index = incremented_matches[-1] + len(pattern_container["keys"][-1])
-                # print incremented_matches
-                result.add(query[start_index:end_index])
-            elif level < len(pattern_container["keys"]) - 1:
-                validate(incremented_matches,i,level+1)
+    curr_indexes = [i for i in indexes[level] if i > current_pos]
+
+    for i in curr_indexes:
+        previous_word = keys[level-1]
+        if restrictions[level-1][0] <=  i - (len(previous_word) + current_pos)  <= restrictions[level-1][1]:
+            if level  == stop_level:
+                result.add(query[pos_first_match: i + len(keys[-1])])
+            elif level < len(keys) - 1:
+                validate(pos_first_match,i,level+1,stop_level)
         else: break
     
     #t4 = time.time()
     #print t4-t3
-    
-def main(pattern):           
+def main(p):
     #pattern = 'cats[0,10]are[0,10]to'
-    #pattern = 'or[0,10]or[0,10]or'
+    pattern = p
     #pattern = 'when[15,25]republic[15,25]along'
 
     fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_cat_preproc.xml"
     #fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_cat_preproc_double.xml"
     #fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_a_preproc.xml"
 
+    counter = 1
+
     # initialize global parameters        
     global query # the string that is being queried
-    global pattern_container # a pattern container
+    global indexes # a pattern container
+    global keys # list of keys
+    global restrictions #list of restrictions
     global result # container for the matchin strings
+    
+    pattern_container = getPattern(pattern)
 
+    indexes = []
+    keys  = pattern_container["keys"]
+    restrictions = pattern_container["restrictions"]
+    
     t0 = time.time()
-    counter = 1
+    i = 0
 
     # open a file to process the data
     with open(fileUri) as f:
         for line in f:
-            incoming = line
-            query = incoming
             
-            pattern_container = getPattern(pattern)
+            query = line
             result = set()
-
-            #print "The query is {}".format(query)
-            #print "The keys are {} \n".format(pattern_container["keys"])
-
-            t3 = time.time()
             
-            indexes = []
             for key in pattern_container["keys"]:
                 indexes.append([m.start() for m in re.finditer('(?={})'.format(key), query)])
 
-            pattern_container["index"] = indexes
+            # going through the first list      
+            for i in indexes[0]:
+                validate(i,i,1,len(pattern_container["keys"])-1)
 
-            t4 = time.time()
-            print "index time {}".format(t4-t3)
-            
-            #print "\n container \n"
-            #print pattern_container    
-
-            #print "start \n"
-            
-            for i in pattern_container["index"][0]:
-                validate([i],i,1)
-            
             print "The result is : \n"
             if result:
                 for i in result:
@@ -101,10 +86,9 @@ def main(pattern):
 
             print counter
             counter = counter + 1
-            
+
             # delete from memory
             del result
-            del incoming
 
     t1 = time.time()
     print "\nthe execution time was {}".format(t1-t0)
