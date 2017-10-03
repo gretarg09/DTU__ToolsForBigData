@@ -44,9 +44,9 @@ def validate(matches,current_pos,level):
     #t4 = time.time()
     #print t4-t3
  
-def main():           
+def main(pattern):           
     #pattern = 'cats[0,10]are[0,10]to'
-    pattern = 'or[0,10]or[0,10]or'
+    #pattern = 'or[0,10]or[0,10]or'
     #pattern = 'when[15,25]republic[15,25]along'
 
     fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_cat_preproc.xml"
@@ -110,4 +110,4 @@ def main():
     t1 = time.time()
     print "\nthe execution time was {}".format(t1-t0)
 
-main()
+main('or[0,10]or[0,10]or')
