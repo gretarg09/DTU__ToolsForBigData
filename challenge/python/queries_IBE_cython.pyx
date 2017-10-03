@@ -25,8 +25,8 @@ def main(pattern):
 
     t0 = time.time()
     results = {}
-    start_index = 0 # so we can loop thorugh all the first letters in the pattern
-    key_counter = 0
+    cdef int start_index = 0 # so we can loop thorugh all the first letters in the pattern
+    cdef int key_counter = 0
     for i in xrange(test_string.count(pattern[0])):
         start_index = min(start_index, len(test_string)-1)
         start_index =test_string.index(pattern[0], start_index) + len(pattern[0]) 
@@ -42,7 +42,7 @@ def main(pattern):
     t2 = time.time()
     if len(pattern) > 3:
         vec = pattern[3:]
-        # the ideal is to just a method infuence from dynamic programming, 
+        # the ideal is to just a method influenced from dynamic programming, 
         for i in xrange(1,len(vec), 2):
             for key, value in results.items():
                 start_index, sub_result = value

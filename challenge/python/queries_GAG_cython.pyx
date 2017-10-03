@@ -73,7 +73,7 @@ def main(pattern):
             #print "The query is {}".format(query)
             #print "The keys are {} \n".format(pattern_container["keys"])
 
-            #t3 = time.time()
+            t3 = time.time()
             
             indexes = []
             for key in pattern_container["keys"]:
@@ -81,15 +81,14 @@ def main(pattern):
 
             pattern_container["index"] = indexes
 
-            #t4 = time.time()
-            #print "index time {}".format(t4-t3)
+            t4 = time.time()
+            print "index time {}".format(t4-t3)
             
             #print "\n container \n"
             #print pattern_container    
 
             #print "start \n"
             
-            # going through the first list
             for i in pattern_container["index"][0]:
                 validate([i],i,1)
             
