@@ -1,10 +1,8 @@
-import exercise33_python
-import exercise33_cython
 import timeit
 
 # Use the timeit module in python to time the exection of both a python and cython version of the same program
-py = timeit.timeit('exercise33_python.calculate(10000)', setup='import exercise33_python', number=500)
-cy = timeit.timeit('exercise33_cython.calculate(10000)', setup='import exercise33_cython', number=500)
+py = timeit.timeit('queries_GAG.main()', setup='import queries_GAG', number=1)
+cy = timeit.timeit('queries_GAG_cython.main()', setup='import queries_GAG_cython', number=1)
 
 print "The execution time of the python program was: {}".format(py)
 print "The execution time of the cython program was: {}".format(cy)

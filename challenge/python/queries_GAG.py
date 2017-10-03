@@ -93,12 +93,12 @@ def main():
             for i in pattern_container["index"][0]:
                 validate([i],i,1)
             
-            #print "The result is : \n"
-            #if result:
-            #    for i in result:
-            #        print i
-            #else:
-            #    print "no match in this text"
+            print "The result is : \n"
+            if result:
+                for i in result:
+                    print i
+            else:
+                print "no match in this text"
 
             print counter
             counter = counter + 1

@@ -44,7 +44,7 @@ def validate(matches,current_pos,level):
     #t4 = time.time()
     #print t4-t3
     
-def __main__():           
+def main():           
     #pattern = 'cats[0,10]are[0,10]to'
     pattern = 'or[0,10]or[0,10]or'
     #pattern = 'when[15,25]republic[15,25]along'
@@ -53,8 +53,12 @@ def __main__():
     #fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_cat_preproc_double.xml"
     #fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_a_preproc.xml"
 
-    t0 = time.time()
+    # initialize global parameters        
+    global query # the string that is being queried
+    global pattern_container # a pattern container
+    global result # container for the matchin strings
 
+    t0 = time.time()
     counter = 1
 
     # open a file to process the data
@@ -89,12 +93,12 @@ def __main__():
             for i in pattern_container["index"][0]:
                 validate([i],i,1)
             
-            #print "The result is : \n"
-            #if result:
-            #    for i in result:
-            #        print i
-            #else:
-            #    print "no match in this text"
+            print "The result is : \n"
+            if result:
+                for i in result:
+                    print i
+            else:
+                print "no match in this text"
 
             print counter
             counter = counter + 1
@@ -105,3 +109,5 @@ def __main__():
 
     t1 = time.time()
     print "\nthe execution time was {}".format(t1-t0)
+
+main()
