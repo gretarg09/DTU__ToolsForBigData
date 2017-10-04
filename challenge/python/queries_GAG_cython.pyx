@@ -63,7 +63,7 @@ def main(p):
     t0 = time.time()
     i = 0
 
-    # open a file to process the data
+    # open a file to processs the data
     with open(fileUri) as f:
         for line in f:
             
