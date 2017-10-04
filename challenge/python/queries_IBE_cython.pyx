@@ -23,7 +23,7 @@ def main(pattern):
     cdef int start_index = 0 # so we can loop thorugh all the first letters in the pattern
     cdef int key_counter = 0
 
-    with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_a_preproc.xml") as f:
+    with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_preproc.xml") as f:
         for line in f:
             test_string = line  
 
@@ -41,7 +41,7 @@ def main(pattern):
                         results[key_counter] = (start_index + len(string), pattern[0]+ string) #results[key_counter] = (start_index + len(string),  string) #  
                         key_counter += 1
 
-                start_index += 1
+                start_index += 1 - len(pattern[0])
             t2 = time.time()
             if len(pattern) > 3:
                 vec = pattern[3:]
@@ -58,7 +58,7 @@ def main(pattern):
                                 key_counter += 1
                         del results[key]
             
-            print results
+            #print results
     
 
         

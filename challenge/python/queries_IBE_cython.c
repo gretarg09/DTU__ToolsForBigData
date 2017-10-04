@@ -833,18 +833,8 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
-/* Print.proto */
-static int __Pyx_Print(PyObject*, PyObject *, int);
-#if CYTHON_COMPILING_IN_PYPY || PY_MAJOR_VERSION >= 3
-static PyObject* __pyx_print = 0;
-static PyObject* __pyx_print_kwargs = 0;
-#endif
-
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
-
-/* PrintOne.proto */
-static int __Pyx_PrintOne(PyObject* stream, PyObject *o);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
@@ -872,12 +862,10 @@ static const char __pyx_k__2[] = "]";
 static const char __pyx_k__5[] = ",";
 static const char __pyx_k__8[] = "";
 static const char __pyx_k_t2[] = "t2";
-static const char __pyx_k_end[] = "end";
 static const char __pyx_k_key[] = "key";
 static const char __pyx_k_num[] = "num";
 static const char __pyx_k_vec[] = "vec";
 static const char __pyx_k_exit[] = "__exit__";
-static const char __pyx_k_file[] = "file";
 static const char __pyx_k_join[] = "join";
 static const char __pyx_k_line[] = "line";
 static const char __pyx_k_main[] = "__main__";
@@ -889,7 +877,6 @@ static const char __pyx_k_count[] = "count";
 static const char __pyx_k_enter[] = "__enter__";
 static const char __pyx_k_index[] = "index";
 static const char __pyx_k_items[] = "items";
-static const char __pyx_k_print[] = "print";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_split[] = "split";
 static const char __pyx_k_value[] = "value";
@@ -910,7 +897,7 @@ static const char __pyx_k_current_result[] = "current_result";
 static const char __pyx_k_pattern_sequence[] = "pattern_sequence";
 static const char __pyx_k_queries_IBE_cython[] = "queries_IBE_cython";
 static const char __pyx_k_Users_GretarAtli_Documents_GitH[] = "/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge/python/queries_IBE_cython.pyx";
-static const char __pyx_k_Users_GretarAtli_Dropbox_Dtu_To[] = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_a_preproc.xml";
+static const char __pyx_k_Users_GretarAtli_Dropbox_Dtu_To[] = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_preproc.xml";
 static PyObject *__pyx_kp_s_;
 static PyObject *__pyx_kp_s_Users_GretarAtli_Documents_GitH;
 static PyObject *__pyx_kp_s_Users_GretarAtli_Dropbox_Dtu_To;
@@ -919,12 +906,10 @@ static PyObject *__pyx_kp_s__5;
 static PyObject *__pyx_kp_s__8;
 static PyObject *__pyx_n_s_count;
 static PyObject *__pyx_n_s_current_result;
-static PyObject *__pyx_n_s_end;
 static PyObject *__pyx_n_s_end_index;
 static PyObject *__pyx_n_s_enter;
 static PyObject *__pyx_n_s_exit;
 static PyObject *__pyx_n_s_f;
-static PyObject *__pyx_n_s_file;
 static PyObject *__pyx_n_s_getPattern;
 static PyObject *__pyx_n_s_i;
 static PyObject *__pyx_n_s_import;
@@ -942,7 +927,6 @@ static PyObject *__pyx_n_s_nums;
 static PyObject *__pyx_n_s_open;
 static PyObject *__pyx_n_s_pattern;
 static PyObject *__pyx_n_s_pattern_sequence;
-static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_queries_IBE_cython;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_replace;
@@ -1414,14 +1398,14 @@ static PyObject *__pyx_pf_18queries_IBE_cython_2main(CYTHON_UNUSED PyObject *__p
  *     cdef int start_index = 0 # so we can loop thorugh all the first letters in the pattern
  *     cdef int key_counter = 0             # <<<<<<<<<<<<<<
  * 
- *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_a_preproc.xml") as f:
+ *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_preproc.xml") as f:
  */
   __pyx_v_key_counter = 0;
 
   /* "queries_IBE_cython.pyx":26
  *     cdef int key_counter = 0
  * 
- *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_a_preproc.xml") as f:             # <<<<<<<<<<<<<<
+ *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_preproc.xml") as f:             # <<<<<<<<<<<<<<
  *         for line in f:
  *             test_string = line
  */
@@ -1467,7 +1451,7 @@ static PyObject *__pyx_pf_18queries_IBE_cython_2main(CYTHON_UNUSED PyObject *__p
 
           /* "queries_IBE_cython.pyx":27
  * 
- *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_a_preproc.xml") as f:
+ *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_preproc.xml") as f:
  *         for line in f:             # <<<<<<<<<<<<<<
  *             test_string = line
  * 
@@ -1515,7 +1499,7 @@ static PyObject *__pyx_pf_18queries_IBE_cython_2main(CYTHON_UNUSED PyObject *__p
             __pyx_t_1 = 0;
 
             /* "queries_IBE_cython.pyx":28
- *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_a_preproc.xml") as f:
+ *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_preproc.xml") as f:
  *         for line in f:
  *             test_string = line             # <<<<<<<<<<<<<<
  * 
@@ -1938,7 +1922,7 @@ static PyObject *__pyx_pf_18queries_IBE_cython_2main(CYTHON_UNUSED PyObject *__p
  *                         results[key_counter] = (start_index + len(string), pattern[0]+ string) #results[key_counter] = (start_index + len(string),  string) #
  *                         key_counter += 1             # <<<<<<<<<<<<<<
  * 
- *                 start_index += 1
+ *                 start_index += 1 - len(pattern[0])
  */
                   __pyx_v_key_counter = (__pyx_v_key_counter + 1);
 
@@ -1964,11 +1948,15 @@ static PyObject *__pyx_pf_18queries_IBE_cython_2main(CYTHON_UNUSED PyObject *__p
               /* "queries_IBE_cython.pyx":44
  *                         key_counter += 1
  * 
- *                 start_index += 1             # <<<<<<<<<<<<<<
+ *                 start_index += 1 - len(pattern[0])             # <<<<<<<<<<<<<<
  *             t2 = time.time()
  *             if len(pattern) > 3:
  */
-              __pyx_v_start_index = (__pyx_v_start_index + 1);
+              __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_pattern, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L7_error)
+              __Pyx_GOTREF(__pyx_t_1);
+              __pyx_t_15 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_15 == -1)) __PYX_ERR(0, 44, __pyx_L7_error)
+              __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+              __pyx_v_start_index = (__pyx_v_start_index + (1 - __pyx_t_15));
 
               /* "queries_IBE_cython.pyx":33
  *             start_index = 0 # so we can loop thorugh all the first letters in the pattern
@@ -1982,7 +1970,7 @@ static PyObject *__pyx_pf_18queries_IBE_cython_2main(CYTHON_UNUSED PyObject *__p
 
             /* "queries_IBE_cython.pyx":45
  * 
- *                 start_index += 1
+ *                 start_index += 1 - len(pattern[0])
  *             t2 = time.time()             # <<<<<<<<<<<<<<
  *             if len(pattern) > 3:
  *                 vec = pattern[3:]
@@ -2014,7 +2002,7 @@ static PyObject *__pyx_pf_18queries_IBE_cython_2main(CYTHON_UNUSED PyObject *__p
             __pyx_t_2 = 0;
 
             /* "queries_IBE_cython.pyx":46
- *                 start_index += 1
+ *                 start_index += 1 - len(pattern[0])
  *             t2 = time.time()
  *             if len(pattern) > 3:             # <<<<<<<<<<<<<<
  *                 vec = pattern[3:]
@@ -2522,7 +2510,7 @@ static PyObject *__pyx_pf_18queries_IBE_cython_2main(CYTHON_UNUSED PyObject *__p
  *                                 key_counter += 1
  *                         del results[key]             # <<<<<<<<<<<<<<
  * 
- *             print results
+ *             #print results
  */
                   if (unlikely(PyDict_DelItem(__pyx_v_results, __pyx_v_key) < 0)) __PYX_ERR(0, 59, __pyx_L7_error)
 
@@ -2547,7 +2535,7 @@ static PyObject *__pyx_pf_18queries_IBE_cython_2main(CYTHON_UNUSED PyObject *__p
               __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
               /* "queries_IBE_cython.pyx":46
- *                 start_index += 1
+ *                 start_index += 1 - len(pattern[0])
  *             t2 = time.time()
  *             if len(pattern) > 3:             # <<<<<<<<<<<<<<
  *                 vec = pattern[3:]
@@ -2555,18 +2543,9 @@ static PyObject *__pyx_pf_18queries_IBE_cython_2main(CYTHON_UNUSED PyObject *__p
  */
             }
 
-            /* "queries_IBE_cython.pyx":61
- *                         del results[key]
- * 
- *             print results             # <<<<<<<<<<<<<<
- * 
- * 
- */
-            if (__Pyx_PrintOne(0, __pyx_v_results) < 0) __PYX_ERR(0, 61, __pyx_L7_error)
-
             /* "queries_IBE_cython.pyx":27
  * 
- *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_a_preproc.xml") as f:
+ *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_preproc.xml") as f:
  *         for line in f:             # <<<<<<<<<<<<<<
  *             test_string = line
  * 
@@ -2577,7 +2556,7 @@ static PyObject *__pyx_pf_18queries_IBE_cython_2main(CYTHON_UNUSED PyObject *__p
           /* "queries_IBE_cython.pyx":26
  *     cdef int key_counter = 0
  * 
- *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_a_preproc.xml") as f:             # <<<<<<<<<<<<<<
+ *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_preproc.xml") as f:             # <<<<<<<<<<<<<<
  *         for line in f:
  *             test_string = line
  */
@@ -2736,12 +2715,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s__8, __pyx_k__8, sizeof(__pyx_k__8), 0, 0, 1, 0},
   {&__pyx_n_s_count, __pyx_k_count, sizeof(__pyx_k_count), 0, 0, 1, 1},
   {&__pyx_n_s_current_result, __pyx_k_current_result, sizeof(__pyx_k_current_result), 0, 0, 1, 1},
-  {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
   {&__pyx_n_s_end_index, __pyx_k_end_index, sizeof(__pyx_k_end_index), 0, 0, 1, 1},
   {&__pyx_n_s_enter, __pyx_k_enter, sizeof(__pyx_k_enter), 0, 0, 1, 1},
   {&__pyx_n_s_exit, __pyx_k_exit, sizeof(__pyx_k_exit), 0, 0, 1, 1},
   {&__pyx_n_s_f, __pyx_k_f, sizeof(__pyx_k_f), 0, 0, 1, 1},
-  {&__pyx_n_s_file, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
   {&__pyx_n_s_getPattern, __pyx_k_getPattern, sizeof(__pyx_k_getPattern), 0, 0, 1, 1},
   {&__pyx_n_s_i, __pyx_k_i, sizeof(__pyx_k_i), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
@@ -2759,7 +2736,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_open, __pyx_k_open, sizeof(__pyx_k_open), 0, 0, 1, 1},
   {&__pyx_n_s_pattern, __pyx_k_pattern, sizeof(__pyx_k_pattern), 0, 0, 1, 1},
   {&__pyx_n_s_pattern_sequence, __pyx_k_pattern_sequence, sizeof(__pyx_k_pattern_sequence), 0, 0, 1, 1},
-  {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_queries_IBE_cython, __pyx_k_queries_IBE_cython, sizeof(__pyx_k_queries_IBE_cython), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_replace, __pyx_k_replace, sizeof(__pyx_k_replace), 0, 0, 1, 1},
@@ -2830,7 +2806,7 @@ static int __Pyx_InitCachedConstants(void) {
   /* "queries_IBE_cython.pyx":26
  *     cdef int key_counter = 0
  * 
- *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_a_preproc.xml") as f:             # <<<<<<<<<<<<<<
+ *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_preproc.xml") as f:             # <<<<<<<<<<<<<<
  *         for line in f:
  *             test_string = line
  */
@@ -2852,7 +2828,7 @@ static int __Pyx_InitCachedConstants(void) {
   /* "queries_IBE_cython.pyx":26
  *     cdef int key_counter = 0
  * 
- *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_a_preproc.xml") as f:             # <<<<<<<<<<<<<<
+ *     with open("/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_preproc.xml") as f:             # <<<<<<<<<<<<<<
  *         for line in f:
  *             test_string = line
  */
@@ -4100,112 +4076,6 @@ bad:
         return (target_type) value;\
     }
 
-/* Print */
-        #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION < 3
-static PyObject *__Pyx_GetStdout(void) {
-    PyObject *f = PySys_GetObject((char *)"stdout");
-    if (!f) {
-        PyErr_SetString(PyExc_RuntimeError, "lost sys.stdout");
-    }
-    return f;
-}
-static int __Pyx_Print(PyObject* f, PyObject *arg_tuple, int newline) {
-    int i;
-    if (!f) {
-        if (!(f = __Pyx_GetStdout()))
-            return -1;
-    }
-    Py_INCREF(f);
-    for (i=0; i < PyTuple_GET_SIZE(arg_tuple); i++) {
-        PyObject* v;
-        if (PyFile_SoftSpace(f, 1)) {
-            if (PyFile_WriteString(" ", f) < 0)
-                goto error;
-        }
-        v = PyTuple_GET_ITEM(arg_tuple, i);
-        if (PyFile_WriteObject(v, f, Py_PRINT_RAW) < 0)
-            goto error;
-        if (PyString_Check(v)) {
-            char *s = PyString_AsString(v);
-            Py_ssize_t len = PyString_Size(v);
-            if (len > 0) {
-                switch (s[len-1]) {
-                    case ' ': break;
-                    case '\f': case '\r': case '\n': case '\t': case '\v':
-                        PyFile_SoftSpace(f, 0);
-                        break;
-                    default:  break;
-                }
-            }
-        }
-    }
-    if (newline) {
-        if (PyFile_WriteString("\n", f) < 0)
-            goto error;
-        PyFile_SoftSpace(f, 0);
-    }
-    Py_DECREF(f);
-    return 0;
-error:
-    Py_DECREF(f);
-    return -1;
-}
-#else
-static int __Pyx_Print(PyObject* stream, PyObject *arg_tuple, int newline) {
-    PyObject* kwargs = 0;
-    PyObject* result = 0;
-    PyObject* end_string;
-    if (unlikely(!__pyx_print)) {
-        __pyx_print = PyObject_GetAttr(__pyx_b, __pyx_n_s_print);
-        if (!__pyx_print)
-            return -1;
-    }
-    if (stream) {
-        kwargs = PyDict_New();
-        if (unlikely(!kwargs))
-            return -1;
-        if (unlikely(PyDict_SetItem(kwargs, __pyx_n_s_file, stream) < 0))
-            goto bad;
-        if (!newline) {
-            end_string = PyUnicode_FromStringAndSize(" ", 1);
-            if (unlikely(!end_string))
-                goto bad;
-            if (PyDict_SetItem(kwargs, __pyx_n_s_end, end_string) < 0) {
-                Py_DECREF(end_string);
-                goto bad;
-            }
-            Py_DECREF(end_string);
-        }
-    } else if (!newline) {
-        if (unlikely(!__pyx_print_kwargs)) {
-            __pyx_print_kwargs = PyDict_New();
-            if (unlikely(!__pyx_print_kwargs))
-                return -1;
-            end_string = PyUnicode_FromStringAndSize(" ", 1);
-            if (unlikely(!end_string))
-                return -1;
-            if (PyDict_SetItem(__pyx_print_kwargs, __pyx_n_s_end, end_string) < 0) {
-                Py_DECREF(end_string);
-                return -1;
-            }
-            Py_DECREF(end_string);
-        }
-        kwargs = __pyx_print_kwargs;
-    }
-    result = PyObject_Call(__pyx_print, arg_tuple, kwargs);
-    if (unlikely(kwargs) && (kwargs != __pyx_print_kwargs))
-        Py_DECREF(kwargs);
-    if (!result)
-        return -1;
-    Py_DECREF(result);
-    return 0;
-bad:
-    if (kwargs != __pyx_print_kwargs)
-        Py_XDECREF(kwargs);
-    return -1;
-}
-#endif
-
 /* CIntFromPy */
         static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
     const int neg_one = (int) -1, const_zero = (int) 0;
@@ -4390,43 +4260,6 @@ raise_neg_overflow:
         "can't convert negative value to int");
     return (int) -1;
 }
-
-/* PrintOne */
-        #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION < 3
-static int __Pyx_PrintOne(PyObject* f, PyObject *o) {
-    if (!f) {
-        if (!(f = __Pyx_GetStdout()))
-            return -1;
-    }
-    Py_INCREF(f);
-    if (PyFile_SoftSpace(f, 0)) {
-        if (PyFile_WriteString(" ", f) < 0)
-            goto error;
-    }
-    if (PyFile_WriteObject(o, f, Py_PRINT_RAW) < 0)
-        goto error;
-    if (PyFile_WriteString("\n", f) < 0)
-        goto error;
-    Py_DECREF(f);
-    return 0;
-error:
-    Py_DECREF(f);
-    return -1;
-    /* the line below is just to avoid C compiler
-     * warnings about unused functions */
-    return __Pyx_Print(f, NULL, 0);
-}
-#else
-static int __Pyx_PrintOne(PyObject* stream, PyObject *o) {
-    int res;
-    PyObject* arg_tuple = PyTuple_Pack(1, o);
-    if (unlikely(!arg_tuple))
-        return -1;
-    res = __Pyx_Print(stream, arg_tuple, 1);
-    Py_DECREF(arg_tuple);
-    return res;
-}
-#endif
 
 /* CIntFromPy */
         static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
