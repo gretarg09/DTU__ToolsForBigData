@@ -35,19 +35,19 @@ import queries_IBE_cython as cy
 # ----------- Letter query -----------
 #"A" articles - picked as all articles starting with letter "A" or "a"
 
-# cy.main('arnold[0,10]schwarzenegger[0,10]is')
+#cy.main('arnold[0,10]schwarzenegger[0,10]is')
 # Got 5 results and 15 matches
 # We got 5 results and 14 matches
 
 #cy.main('apache[0, 100]software')
 # Got 186 results and 1517 matches
-# We got got 186 matches and 1509 matches
+# We got got 186 matches and 1517 matches ----
 
-cy.main('aarhus[30, 150]denmark')
+#cy.main('aarhus[30, 150]denmark')
 # Got 131 results and 555 matches 
 # We got 136 results and 579 matches
 
-# cy.main('english[0, 100]alphabet')
+#cy.main('english[0, 100]alphabet')
 # Got 92 results and 181 matches ----
 # We got 92 results and 181 matches
 
@@ -72,8 +72,8 @@ cy.main('aarhus[30, 150]denmark')
 
 #cy.main('stress[0,250]test')
 #Got 3374 results and 7355 matches
-# we got 3370 matches and 7339 matches
+# we got 3377 matches and 7350 matches
 
-#cy.main('object[10, 200]application[0, 100]python[10, 200]system[0, 100]computer[0, 10]science[0, 150]linux[0, 200]ruby') 
+cy.main('object[10, 200]application[0, 100]python[10, 200]system[0, 100]computer[0, 10]science[0, 150]linux[0, 200]ruby') 
 #Got 1 results and 1 matches
 # Got 1 results and 1 matches  ------

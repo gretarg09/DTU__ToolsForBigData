@@ -11,7 +11,7 @@ processedFileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/c
 
 position = 0 # The state of the program. More info down below
 counter = 0 # counts the number of article that have been processed
-isRedirect = False
+isRedirect = False # variable that is used to identify redirect pages
 text = "" # a container for the text
 
 t0 = time.time()
@@ -24,11 +24,8 @@ w = open(processedFileUri, 'w')
 
 with open(fileUri) as f:
     for line in f:    
-        #  convert line breaks to spaces. Convert all upper case letters to lower case letters. 
-        #line = line.replace("\n"," ").lower()
-        #line = line.replace(" +"," ")
-        #line = re.sub(r"\n+"," ",line).lower()
-        #line = re.sub(r'[\n\r]+', r' ', line)
+        # Convert all upper case letters to lower case letters.
+        line  = line.lower()
         
         if position == 0 : 
             # Try to find a redirect tag
@@ -58,9 +55,9 @@ with open(fileUri) as f:
                     text = text + reTextEndingResult[0]
                     position = 0
                     # If it is not a redirect page then we write the string to a file
-                    if isRedirect == False and namespace == 0:
-                        text = re.sub(r"\n+"," ",text).lower()
-                        text = text + "\n"
+                    if isRedirect == False and namespace == 0: 
+                        text = re.sub(r"\n+"," ",text) # convert line breaks to spaces.
+                        text = text + "\n" # Add newline in the end of each article
                         w.write(text)
                     isRedirect = False # Initialize the redirect boolean variable
                     namespace = -1 # Initialize the namespace as -1
@@ -81,8 +78,8 @@ with open(fileUri) as f:
                 position = 0
                 # If it is not a redirect page then we write the string to a file
                 if isRedirect == False and namespace == 0:
-                    text = re.sub(r"\n+"," ",text).lower()
-                    text = text + "\n"
+                    text = re.sub(r"\n+"," ",text) # convert line breaks to spaces. 
+                    text = text + "\n" # Add newline in the end of each article
                     w.write(text)
                 isRedirect = False # Initialize the redirect boolean variable
                 namespace = -1 # Initialize the namespace as -1

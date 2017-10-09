@@ -5,17 +5,17 @@ import time
 fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/enwiki-20170820-pages-articles-multistream.xml"
 processedFileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/a_preproc.xml"
 
-#fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/mini_tail.xml"
-#processedFileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/mini_tail_a_p_2.xml"
+#fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/mini_head.xml"
+#processedFileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/mini_head_a_p_2.xml"
 
 position = 0 # The state of the program. More info down below
 counter = 0 # counts the number of article that have been processed
-read = True # variable that controls if the article should be processed or no
-isRedirect = False # variable that is used to check whether a page is a redirect or not
+read = True # variable that controls if the article should be processed or not
+isRedirect = False # # variable that is used to identify redirect pages
 text = "" # a container for the text
 t0 = time.time()
 
-# pos)ition 0 means that the program is currently reading lines that are not between <text><\text>
+# position 0 means that the program is currently reading lines that are not between <text><\text>
 # position 1 means that the program is currently reading lines that are between <text><\text>
 
 # open a file to write in 
@@ -23,14 +23,14 @@ w = open(processedFileUri, 'w')
 
 with open(fileUri) as f:
     for line in f:
-        #  convert line breaks to spaces. Convert all upper case letters to lower case letters. 
-        # line = line.replace("\n"," ").lower()
+        # Convert all upper case letters to lower case letters.
+        line = line.lower()
         
         # Check if title starts with A, if so then we 
         reresult = re.findall("<title>(.*)</title>",line)
         if reresult:
             # Stop reading when the articles do not start with a anymore
-            if reresult[0].lower().startswith("a") == False:
+            if reresult[0].startswith("a") == False:
                 read = False
             else:
                 read = True
@@ -66,8 +66,8 @@ with open(fileUri) as f:
                         position = 0
                         # If it is not a redirect page then we write the string to a file
                         if isRedirect == False and namespace == 0:
-                            text = re.sub(r"\n+"," ",text).lower()
-                            text = text + "\n"
+                            text = re.sub(r"\n+"," ",text) # convert line breaks to spaces.
+                            text = text + "\n" # Add newline in the end of each article
                             w.write(text)
                         isRedirect = False # Initialize the redirect boolean variable
                         namespace = -1 # Initialize the namespace as -1
@@ -87,9 +87,9 @@ with open(fileUri) as f:
                     text = text + reTextEndingResult[0] 
                     position = 0
                     # If it is not a redirect page then we write the string to a file
-                    if isRedirect == False and namespace == 0:
-                        text = re.sub(r"\n+"," ",text).lower()
-                        text = text + "\n"
+                    if isRedirect == False and namespace == 0:  
+                        text = re.sub(r"\n+"," ",text) # convert line breaks to spaces.
+                        text = text + "\n" # Add newline in the end of each article
                         w.write(text)
                     isRedirect = False # Initialize the redirect boolean variable
                     namespace = -1 # Initialize the namespace as -1
