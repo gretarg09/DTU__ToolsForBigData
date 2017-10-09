@@ -9,6 +9,14 @@ import queries_IBE_cython as cy
 #cy.main('dog[0,10]anatomy')
 
 
+cy.main("big[0,20]data[0,20]query")
+#cy.main("cat[0,10]are[0,10]to")
+#cy.main("dogs[0,15]are[0,15]to")
+#cy.main("hopefully[10,20]no[10,20]matches")
+#cy.main("python[0,10]programming[0,10]language")
+#cy.main("wikipedia[0,20]article")
+
+
 # ---------- For the cat article ----------
 
 #cy.main('cat[0, 10]are[0, 10]to')
@@ -74,6 +82,6 @@ import queries_IBE_cython as cy
 #Got 3374 results and 7355 matches
 # we got 3377 results and 7350 matches
 
-cy.main('object[10, 200]application[0, 100]python[10, 200]system[0, 100]computer[0, 10]science[0, 150]linux[0, 200]ruby') 
+#cy.main('object[10, 200]application[0, 100]python[10, 200]system[0, 100]computer[0, 10]science[0, 150]linux[0, 200]ruby') 
 #Got 1 results and 1 matches
 # Got 1 results and 1 matches  ------
