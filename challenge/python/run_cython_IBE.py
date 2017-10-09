@@ -43,7 +43,7 @@ import queries_IBE_cython as cy
 # Got 186 results and 1517 matches
 # We got got 186 matches and 1509 matches
 
-# cy.main('aarhus[30, 150]denmark')
+cy.main('aarhus[30, 150]denmark')
 # Got 131 results and 555 matches 
 # We got 136 results and 579 matches
 
