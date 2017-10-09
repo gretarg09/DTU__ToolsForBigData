@@ -28,9 +28,9 @@ def main(pattern_string):
     print pattern
 
     #fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_cat_preproc.xml"
-    fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/all_preproc.xml"
+    fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/cat_preproc.xml"
     fileUri_answer = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/answers/"
-    fileUri_answer = fileUri_answer + "all_" + pattern_string + ".txt"
+    fileUri_answer = fileUri_answer + "cat_" + pattern_string + ".txt"
 
     # Initalize counters and results
     #t0 = time.time()
@@ -92,7 +92,7 @@ def main(pattern_string):
                             if text_under_inspection[-len(temp_pattern[i]):] == temp_pattern[i] \
                                     and len(text_under_inspection) > temp_pattern[i - 1][0]:
                                 results[key_counter] = \
-                                    (start_index, start_index + len(text_under_inspection),sub_result + text_under_inspection)
+                                    (old_start_index, start_index + len(text_under_inspection),sub_result + text_under_inspection)
                                 key_counter += 1
                         del results[key]
             results = set(results.values())
@@ -100,11 +100,12 @@ def main(pattern_string):
             match_sum = match_sum + len(results)
             if len(results) > 0:
                 result_sum = result_sum + 1
-                string_container = string_container +  "matches: {}".format(str(len(results)))
+                #string_container = string_container +  "matches: {}".format(str(len(results)))
                 for match in results:
                     #w.write("\n")
                     #w.write(match[2])
-                    string_container = string_container + "\n" + str(match[0]) + "-" + str(match[1]) + "_: " + match[2]
+                    string_container = string_container + "\n" + match[2]
+                    #string_container = string_container + "\n" + str(match[0]) + "-" + str(match[1]) + "_: " + match[2]
 
                 #w.write("\n")
         t1 = time.time()
