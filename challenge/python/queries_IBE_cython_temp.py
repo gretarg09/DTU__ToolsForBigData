@@ -30,22 +30,21 @@ def main(pattern_string):
     #fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_cat_preproc.xml"
     fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/all_preproc.xml"
     fileUri_answer = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/answers/"
-    fileUri_answer = fileUri_answer + "all_" + pattern_string + ".txt"
+    fileUri_answer = fileUri_answer + "all" + pattern_string + ".txt"
 
     # Initalize counters and results
-    #t0 = time.time()
+    t0 = time.time()
 
     #results = [word[2] for word in results]
     # write the solution in a nice way
     w = open(fileUri_answer, 'w')
 
-    t0 = time.time()
+    #t0 = time.time()
     cdef int start_index = 0 # so we can loop thorugh all the first letters in the pattern
     cdef int key_counter = 0
-    cdef int all_first_pattern = 0
+    #cdef int all_first_pattern = 0
     cdef int end_index = 0
     cdef str text_under_inspection = ""
-    cdef int match_sum = 0
 
     with open(fileUri) as f:
         for line in f:
@@ -53,15 +52,12 @@ def main(pattern_string):
             #print line
             results = {}
 
-            start_index = 0 # so we can loop thorugh all the first letters in the pattern
-            key_counter = 0
-            all_first_pattern = 0
-            end_index = 0
-            text_under_inspection = ""
+            print type(test_string)
+            print type(pattern[0])
 
-            all_first_pattern = test_string.count(pattern[0])
+            #all_first_pattern = test_string.count(pattern[0])
             # loop through all all cases of the first string pattern
-            for i in range(all_first_pattern):
+            for i in range(test_string.count(pattern[0])):
                 start_index = test_string.index(pattern[0], start_index) + len(pattern[0])
                 text_under_inspection = ''
                 end_index = min(len(test_string), start_index + pattern[1][1] + len(pattern[2]))
@@ -95,19 +91,13 @@ def main(pattern_string):
                         del results[key]
             results = set(results.values())
 
-            match_sum = match_sum + len(results)
-            if len(results) > 0:
-                w.write("\n" + str(len(results)))
-                for match in results:
-                    w.write("\n")
-                    w.write(match[2])
-
-        print "the match sum is {}".format(match_sum)
+            w.write(str(len(results)))
+            for match in results:
+                w.write("\n")
+                w.write(match[2])
 
     t1 = time.time()
     w.close()
 
 #main('or[0,10]or[0,10]or')
-#main('elephants[0,20]are[0,20]to')
-#main('big[0,20]data[0,20]query')
-main('hopefully[10,20]no[10,20]matches')
+main('elephants[0,20]are[0,20]to')
