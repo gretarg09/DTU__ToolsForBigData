@@ -46,6 +46,8 @@ def main(pattern_string):
     cdef int end_index = 0
     cdef str text_under_inspection = ""
     cdef int match_sum = 0
+    cdef int result_sum = 0
+    cdef str string_container = ""
 
     with open(fileUri) as f:
         for line in f:
@@ -97,17 +99,26 @@ def main(pattern_string):
 
             match_sum = match_sum + len(results)
             if len(results) > 0:
-                w.write("\n" + str(len(results)))
+                result_sum = result_sum + 1
+                string_container = string_container +  "matches: {}".format(str(len(results)))
                 for match in results:
-                    w.write("\n")
-                    w.write(match[2])
+                    #w.write("\n")
+                    #w.write(match[2])
+                    string_container = string_container + "\n" + str(match[0]) + "-" + str(match[1]) + "_: " + match[2]
 
-        print "the match sum is {}".format(match_sum)
+                #w.write("\n")
+        t1 = time.time()
 
-    t1 = time.time()
+        w.write("\n---------- statistics ----------\n")
+        w.write("Got {} results and {} matches \n".format(result_sum, match_sum))
+        w.write("The total execution time was {} sec \n".format(t1 - t0))
+        w.write("\n")
+        w.write("Resulting matching strings:\n")
+        w.write(string_container)
+
     w.close()
 
 #main('or[0,10]or[0,10]or')
 #main('elephants[0,20]are[0,20]to')
 #main('big[0,20]data[0,20]query')
-main('hopefully[10,20]no[10,20]matches')
+#main('hopefully[10,20]no[10,20]matches')
