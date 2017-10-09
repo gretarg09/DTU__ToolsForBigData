@@ -69,7 +69,7 @@ def main(pattern_string):
                 end_index = min(len(test_string), start_index + pattern[1][1] + len(pattern[2]))
                 for j in range(start_index, end_index):
                     text_under_inspection += test_string[j]
-                    if text_under_inspection[-len(pattern[2]):] == pattern[2] and len(text_under_inspection) > pattern[1][0]:
+                    if text_under_inspection[-len(pattern[2]):] == pattern[2] and (len(text_under_inspection) - len(pattern[2])) >= pattern[1][0]:
                         results[key_counter] = (start_index, start_index + len(text_under_inspection), pattern[0] + text_under_inspection)
                         key_counter += 1
                 start_index += 1 - len(pattern[0])
@@ -90,7 +90,7 @@ def main(pattern_string):
                         for j in range(start_index, end_index):
                             text_under_inspection += test_string[j]
                             if text_under_inspection[-len(temp_pattern[i]):] == temp_pattern[i] \
-                                    and len(text_under_inspection) > temp_pattern[i - 1][0]:
+                                    and (len(text_under_inspection) - len(temp_pattern[i])) >= temp_pattern[i - 1][0]:
                                 results[key_counter] = \
                                     (old_start_index, start_index + len(text_under_inspection),sub_result + text_under_inspection)
                                 key_counter += 1
@@ -110,7 +110,7 @@ def main(pattern_string):
                 #w.write("\n")
         t1 = time.time()
 
-        w.write("\n---------- statistics ----------\n")
+        w.write("\nStarting query for [{}]\n".format(pattern_string))
         w.write("Got {} results and {} matches \n".format(result_sum, match_sum))
         w.write("The total execution time was {} sec \n".format(t1 - t0))
         w.write("\n")

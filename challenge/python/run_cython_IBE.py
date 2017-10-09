@@ -11,15 +11,15 @@ import queries_IBE_cython as cy
 
 # ---------- For the cat article ----------
 
-# cy.main('cat[0, 10]are[0, 10]to')
+#cy.main('cat[0, 10]are[0, 10]to')
 # Got 1 results and 10 matches
 # We got 1 result and 10 matches  ----
 
-# cy.main('cat[0, 100]anatomy')
+#cy.main('cat[0, 100]anatomy')
 # Got 1 results and 11 matches
 # We got 1 results and 11 matches ----
 
-# cy.main('china[30, 150]washington')
+#cy.main('china[30, 150]washington')
 # Got 1 results and 1 matches
 # We got 1 result and 1 matches ----
 
@@ -45,7 +45,7 @@ import queries_IBE_cython as cy
 
 #cy.main('aarhus[30, 150]denmark')
 # Got 131 results and 555 matches 
-# We got 136 results and 579 matches
+# We got 131 results and 554 matches
 
 #cy.main('english[0, 100]alphabet')
 # Got 92 results and 181 matches ----
@@ -72,7 +72,7 @@ import queries_IBE_cython as cy
 
 #cy.main('stress[0,250]test')
 #Got 3374 results and 7355 matches
-# we got 3377 matches and 7350 matches
+# we got 3377 results and 7350 matches
 
 cy.main('object[10, 200]application[0, 100]python[10, 200]system[0, 100]computer[0, 10]science[0, 150]linux[0, 200]ruby') 
 #Got 1 results and 1 matches
