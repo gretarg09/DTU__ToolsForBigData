@@ -6,7 +6,7 @@ fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_
 processedFileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/a_preproc.xml"
 
 #fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/mini_tail.xml"
-#processedFileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/mini_tail_a_p.xml"
+#processedFileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/mini_tail_a_p_2.xml"
 
 position = 0 # The state of the program. More info down below
 counter = 0 # counts the number of article that have been processed
@@ -24,13 +24,13 @@ w = open(processedFileUri, 'w')
 with open(fileUri) as f:
     for line in f:
         #  convert line breaks to spaces. Convert all upper case letters to lower case letters. 
-        line = line.replace("\n"," ").lower()
+        # line = line.replace("\n"," ").lower()
         
         # Check if title starts with A, if so then we 
         reresult = re.findall("<title>(.*)</title>",line)
         if reresult:
             # Stop reading when the articles do not start with a anymore
-            if reresult[0].startswith("a") == False:
+            if reresult[0].lower().startswith("a") == False:
                 read = False
             else:
                 read = True
@@ -62,10 +62,12 @@ with open(fileUri) as f:
                     if reTextEndingResult:
                         counter += 1
                         # Writing the last part of the page and adding a linebreak in the end
-                        text = text + reTextEndingResult[0] + "\n"
+                        text = text + reTextEndingResult[0]
                         position = 0
                         # If it is not a redirect page then we write the string to a file
                         if isRedirect == False and namespace == 0:
+                            text = re.sub(r"\n+"," ",text).lower()
+                            text = text + "\n"
                             w.write(text)
                         isRedirect = False # Initialize the redirect boolean variable
                         namespace = -1 # Initialize the namespace as -1
@@ -74,6 +76,7 @@ with open(fileUri) as f:
                         text = text + reresult[0]
                         position = 1
             elif position == 1:
+                # check if the string contains <\text> tag, if so we write the collected text to a file
                 reTextEndingResult = re.findall("</text>", line)
                 if reTextEndingResult:
                     reTextEndingResult = re.findall("(.*)</text>", line)
@@ -81,10 +84,12 @@ with open(fileUri) as f:
                     if counter % 1000 == 0:
                         print counter
                     # Writing the last part of the page and adding a linebreak in the end
-                    text = text + reTextEndingResult[0] + "\n"
+                    text = text + reTextEndingResult[0] 
                     position = 0
                     # If it is not a redirect page then we write the string to a file
                     if isRedirect == False and namespace == 0:
+                        text = re.sub(r"\n+"," ",text).lower()
+                        text = text + "\n"
                         w.write(text)
                     isRedirect = False # Initialize the redirect boolean variable
                     namespace = -1 # Initialize the namespace as -1
