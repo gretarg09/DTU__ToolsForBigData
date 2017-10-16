@@ -2,8 +2,8 @@ import json
 import re
 import time
 
-fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/enwiki-20170820-pages-articles-multistream.xml"
-processedFileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/all_preproc.xml"
+#fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/enwiki-20170820-pages-articles-multistream.xml"
+#processedFileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/all_preproc.xml"
 
 #fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/mini_tail.xml"
 #processedFileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/mini_tail_a_p_2.xml"
@@ -70,6 +70,7 @@ with open(fileUri) as f:
             reTextEndingResult = re.findall("</text>", line)
             if reTextEndingResult:
                 reTextEndingResult = re.findall("(.*)</text>", line)
+                # This is just for debugging purpose, just to see some process
                 counter += 1
                 if counter % 1000 == 0:
                     print counter

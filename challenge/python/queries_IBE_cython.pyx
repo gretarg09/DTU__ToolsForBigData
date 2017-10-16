@@ -28,9 +28,9 @@ def main(pattern_string):
     print pattern
 
     #fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_cat_preproc.xml"
-    fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/all_preproc.xml"
+    fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/cat_preproc.xml"
     fileUri_answer = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/answers/"
-    fileUri_answer = fileUri_answer + "all_" + pattern_string + ".txt"
+    fileUri_answer = fileUri_answer + "cat_" + pattern_string + ".txt"
 
     # Initalize counters and results
     #t0 = time.time()

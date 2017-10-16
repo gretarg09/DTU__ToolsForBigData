@@ -2,8 +2,8 @@ import json
 import re
 import time
 
-fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/enwiki-20170820-pages-articles-multistream.xml"
-processedFileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/a_preproc.xml"
+#fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/enwiki-20170820-pages-articles-multistream.xml"
+#processedFileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/a_preproc.xml"
 
 #fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/mini_head.xml"
 #processedFileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/mini_head_a_p_2.xml"
@@ -13,6 +13,7 @@ counter = 0 # counts the number of article that have been processed
 read = True # variable that controls if the article should be processed or not
 isRedirect = False # # variable that is used to identify redirect pages
 text = "" # a container for the text
+
 t0 = time.time()
 
 # position 0 means that the program is currently reading lines that are not between <text><\text>
@@ -26,7 +27,7 @@ with open(fileUri) as f:
         # Convert all upper case letters to lower case letters.
         line = line.lower()
         
-        # Check if title starts with A, if so then we 
+        # Check if title starts with A, if so then we change the read variable to True
         reresult = re.findall("<title>(.*)</title>",line)
         if reresult:
             # Stop reading when the articles do not start with a anymore
@@ -80,6 +81,7 @@ with open(fileUri) as f:
                 reTextEndingResult = re.findall("</text>", line)
                 if reTextEndingResult:
                     reTextEndingResult = re.findall("(.*)</text>", line)
+                    # This is just for debugging purpose, just to see some process
                     counter += 1
                     if counter % 1000 == 0:
                         print counter

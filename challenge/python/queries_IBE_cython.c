@@ -882,7 +882,7 @@ static const char __pyx_k__7[] = "";
 static const char __pyx_k__9[] = "\n";
 static const char __pyx_k_t0[] = "t0";
 static const char __pyx_k_t1[] = "t1";
-static const char __pyx_k_all[] = "all_";
+static const char __pyx_k_cat[] = "cat_";
 static const char __pyx_k_end[] = "end";
 static const char __pyx_k_key[] = "key";
 static const char __pyx_k_num[] = "num";
@@ -935,7 +935,7 @@ static const char __pyx_k_text_under_inspection[] = "text_under_inspection";
 static const char __pyx_k_Got_results_and_matches[] = "Got {} results and {} matches \n";
 static const char __pyx_k_Resulting_matching_strings[] = "Resulting matching strings:\n";
 static const char __pyx_k_Users_GretarAtli_Documents_GitH[] = "/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge/python/queries_IBE_cython.pyx";
-static const char __pyx_k_Users_GretarAtli_Dropbox_Dtu_To[] = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/all_preproc.xml";
+static const char __pyx_k_Users_GretarAtli_Dropbox_Dtu_To[] = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/cat_preproc.xml";
 static const char __pyx_k_The_total_execution_time_was_sec[] = "The total execution time was {} sec \n";
 static const char __pyx_k_Users_GretarAtli_Dropbox_Dtu_To_2[] = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/answers/";
 static PyObject *__pyx_kp_s_;
@@ -950,8 +950,8 @@ static PyObject *__pyx_kp_s__2;
 static PyObject *__pyx_kp_s__5;
 static PyObject *__pyx_kp_s__7;
 static PyObject *__pyx_kp_s__9;
-static PyObject *__pyx_n_s_all;
 static PyObject *__pyx_n_s_all_first_pattern;
+static PyObject *__pyx_n_s_cat;
 static PyObject *__pyx_n_s_close;
 static PyObject *__pyx_n_s_count;
 static PyObject *__pyx_n_s_end;
@@ -1470,31 +1470,31 @@ static PyObject *__pyx_pf_18queries_IBE_cython_2main(CYTHON_UNUSED PyObject *__p
   /* "queries_IBE_cython.pyx":31
  * 
  *     #fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_cat_preproc.xml"
- *     fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/all_preproc.xml"             # <<<<<<<<<<<<<<
+ *     fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/cat_preproc.xml"             # <<<<<<<<<<<<<<
  *     fileUri_answer = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/answers/"
- *     fileUri_answer = fileUri_answer + "all_" + pattern_string + ".txt"
+ *     fileUri_answer = fileUri_answer + "cat_" + pattern_string + ".txt"
  */
   __Pyx_INCREF(__pyx_kp_s_Users_GretarAtli_Dropbox_Dtu_To);
   __pyx_v_fileUri = __pyx_kp_s_Users_GretarAtli_Dropbox_Dtu_To;
 
   /* "queries_IBE_cython.pyx":32
  *     #fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/wiki_english_art_cat_preproc.xml"
- *     fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/all_preproc.xml"
+ *     fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/cat_preproc.xml"
  *     fileUri_answer = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/answers/"             # <<<<<<<<<<<<<<
- *     fileUri_answer = fileUri_answer + "all_" + pattern_string + ".txt"
+ *     fileUri_answer = fileUri_answer + "cat_" + pattern_string + ".txt"
  * 
  */
   __Pyx_INCREF(__pyx_kp_s_Users_GretarAtli_Dropbox_Dtu_To_2);
   __pyx_v_fileUri_answer = __pyx_kp_s_Users_GretarAtli_Dropbox_Dtu_To_2;
 
   /* "queries_IBE_cython.pyx":33
- *     fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/all_preproc.xml"
+ *     fileUri = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/cat_preproc.xml"
  *     fileUri_answer = "/Users/GretarAtli/Dropbox/Dtu/Tools_For_Big_Data/Exercises/challenge_1/answers/"
- *     fileUri_answer = fileUri_answer + "all_" + pattern_string + ".txt"             # <<<<<<<<<<<<<<
+ *     fileUri_answer = fileUri_answer + "cat_" + pattern_string + ".txt"             # <<<<<<<<<<<<<<
  * 
  *     # Initalize counters and results
  */
-  __pyx_t_1 = PyNumber_Add(__pyx_v_fileUri_answer, __pyx_n_s_all); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Add(__pyx_v_fileUri_answer, __pyx_n_s_cat); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_v_pattern_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -3310,8 +3310,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s__5, __pyx_k__5, sizeof(__pyx_k__5), 0, 0, 1, 0},
   {&__pyx_kp_s__7, __pyx_k__7, sizeof(__pyx_k__7), 0, 0, 1, 0},
   {&__pyx_kp_s__9, __pyx_k__9, sizeof(__pyx_k__9), 0, 0, 1, 0},
-  {&__pyx_n_s_all, __pyx_k_all, sizeof(__pyx_k_all), 0, 0, 1, 1},
   {&__pyx_n_s_all_first_pattern, __pyx_k_all_first_pattern, sizeof(__pyx_k_all_first_pattern), 0, 0, 1, 1},
+  {&__pyx_n_s_cat, __pyx_k_cat, sizeof(__pyx_k_cat), 0, 0, 1, 1},
   {&__pyx_n_s_close, __pyx_k_close, sizeof(__pyx_k_close), 0, 0, 1, 1},
   {&__pyx_n_s_count, __pyx_k_count, sizeof(__pyx_k_count), 0, 0, 1, 1},
   {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
