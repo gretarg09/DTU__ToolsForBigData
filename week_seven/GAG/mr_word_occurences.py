@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from mrjob.job import MRJob
 import re
 import sys
