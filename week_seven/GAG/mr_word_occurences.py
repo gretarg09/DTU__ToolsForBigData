@@ -4,10 +4,11 @@ from mrjob.job import MRJob
 import re
 import sys
 
-
 # https://docs.python.org/3/library/re.html#re.compile
 # explenations about re.compile can be found in the above link
-WORD_RE = re.compile(r"[\w']+")
+WORD_RE = re.compile(r"[\w']*u[\w']*", re.I)
+
+# re.compile(r"[\w']+")
 
 class MRWordOccurences(MRJob):
 	def mapper(self,_,line):
