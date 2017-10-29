@@ -1,0 +1,16 @@
+2017-01-01,08:21,Kobenhavn S,Donut,15,card
+2017-01-01,08:22,Kobenhavn N,Croissant,15,card
+2017-01-01,08:22,Kobenhavn N,Croissant,15,card
+2017-01-01,08:25,Kobenhavn N,Donut,15,cash
+2017-01-01,08:25,Kobenhavn N,Muffin,0,FAILED
+2017-01-01,08:26,Kobenhavn V,Muffin,15,card
+2017-01-01,08:31,Kobenhavn O,Muffin,15,card
+2017-01-01,08:37,Kobenhavn V,Danish,15,card
+2017-01-01,08:41,Kobenhavn O,Donut,15,card
+2017-01-01,08:41,Kobenhavn S,Danish,15,cash
+2017-01-01,08:45,Kobenhavn S,Danish,15,card
+2017-01-01,08:59,Kobenhavn V,Croissant,15,card
+2017-01-01,10:59,Kobenhavn V,Croissant,15,card
+2017-01-01,11:47,Kobenhavn V,Croissant,15,card
+2017-01-01,12:30,Kobenhavn O,Donut,15,card
+2017-01-01,13:37,Kobenhavn N,Croissant,15,card

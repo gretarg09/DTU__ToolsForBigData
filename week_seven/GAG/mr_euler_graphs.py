@@ -5,8 +5,11 @@ from mrjob.step import MRStep
 import re
 import sys
 
-
-# In this solution we use the fact that a multiple even numbers added to gether results in an even number
+# The procedure is quite simple. In the mapper we simply add a degree for each node that appears in every edge. 
+# we then use one reducer to sum up the occurance of each node which is the  same as the degree of the node. 
+# we then add 0 to the degree_array if the node has an even degree number else we add 1 to the degree array. 
+# in the final reducer we simply sum up the degree_array and if the sum is not equal to 0 then we know that not all vertices
+# in the graph contains even degree and therefore the graph cannot contain a eular path
 
 class MRIsEulerGraph(MRJob):
 
