@@ -27,21 +27,20 @@ class MinSale(MRJob):
 
 		# between 8 and 11 who sold more than 1 item
 		if total_min > 128 and total_min < 660 and sum_val > 0:
-			print key[0]
 			yield key[0], sum_val 
 
-	def redu(self, key, values):
+	def prior_reducing(self, key, values):
 		yield None, (sum(values), key)
 
-	def reducing(self, key, values):
+	def latter_reducing(self, key, values):
 		yield min(values)
 
 	def steps(self):
 		return  [
 			MRStep( mapper = self.mapping,
 				    combiner = self.combining,
-				    reducer = self.redu),
-			MRStep( reducer = self.reducing )
+				    reducer = self.prior_reducing),
+			MRStep( reducer = self.latter_reducing )
 		]
 
 
