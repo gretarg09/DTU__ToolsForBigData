@@ -26,19 +26,16 @@ class MRIsEulerGraph(MRJob):
 		for note in line.split():
 			yield (note, 1)
 
-	#def combiner_count_degree(self, key, values):
-
-		# calculate the degree of the node
-	#	yield (key, sum(values))
-
 
 	def reducer_check_degree(self,key,value):
 
 		# Check if the degree is even, if so add 1 to an array else add 0 to the same arre
 		# send the array of 0's and 1's to the same reducer
 		if sum(value) % 2 == 0:
+			print ("degree_array", 0)
 			yield ("degree_array", 0)
 		else:
+			print ("degree_array", 1)
 			yield ("degree_array", 1)
 
 	def reducer_check_if_euler(self,_, values):
