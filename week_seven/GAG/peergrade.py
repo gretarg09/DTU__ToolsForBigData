@@ -1,33 +1,25 @@
+import re
 from mrjob.job import MRJob
 from mrjob.step import MRStep
 
-class MRTotal(MRJob):
-    def steps(self):
-        return [
-            MRStep(
-                mapper=self.mapper_orders,
-                reducer=self.reducer_total),
-            MRStep(
-                mapper=self.mapper_key,
-                reducer=self.reducer_output),
-        ]
+pickWord = re.compile(r"[\w']+")
 
-    # Step 1
-    def mapper_orders(self, _, line):
-        (customerID, itemID, orderAmount) = line.split(',')
-        yield customerID, float(orderAmount)
+class eulerTour(MRJob):
+	def steps(self):
+		return [
+			MRStep(mapper=self.mapper,
+					reducer=self.reducer_count_vertices),
+			MRStep(reducer=self.reducer_is_euler_tour)
+				]
+	def mapper(self, key, line):
+		for word in pickWord.findall(line):
+			yield (word.lower(), 1)
 
-    def reducer_total(self, customer, orders_amount):
-        yield customer, sum(orders_amount)
+	def reducer_count_vertices(self, key, values):
+		yield "nodeEdgeCount", sum(values)%2
 
-    # Step 2
-    def mapper_key(self, customer, total_amount):
-        yield '%04.02f' % float(total_amount), customer
-
-    def reducer_output(self, orders_amount, customer):
-        for user in customer:
-            yield user, orders_amount
-
+	def reducer_is_euler_tour(self, key , val):
+		yield "uneven", sum(val)
 
 if __name__ == '__main__':
-    MRTotal.run()
+	eulerTour.run()

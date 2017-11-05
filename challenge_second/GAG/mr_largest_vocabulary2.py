@@ -17,10 +17,14 @@ class MRLargestVocabulary(MRJob):
 
 	def steps(self):
 		return  [
-			MRStep( mapper = self.mapper_get_vocabulary,
+			MRStep( mapper_init =  self.init_top_vocabulary,
+					mapper = self.mapper_get_vocabulary,
 				    reducer = self.reducer_get_vocabulary_size ),
 			MRStep( reducer = self.reducer_get_top_ten )
 		]
+
+	def init_top_vocabulary(self):
+        self.top_vocabulary = {}
 
 	def mapper_get_vocabulary(self, _, line):
 	
@@ -33,7 +37,7 @@ class MRLargestVocabulary(MRJob):
 		for sym in symbols:
 			body = body.replace(sym, " ")
 
-		for w in set(body.split(" ")):
+		for w in frozenset(body.split(" ")):
 			if len(w.replace(" ","")) > 0:
 				yield (subreddit,subreddit_id), w
 
@@ -44,7 +48,7 @@ class MRLargestVocabulary(MRJob):
 		for word in words:
 			uniq_words.setdefault(word)
 
-		yield None, (key, len(uniq_words))
+		yield (key, len(uniq_words))
 		
 	def reducer_get_top_ten(self,key,value):
 		yield None, heapq.nlargest(10, value, key=lambda x:x[1])
@@ -52,8 +56,8 @@ class MRLargestVocabulary(MRJob):
 
 if __name__ == '__main__':
 
-    #t0 = time.time()
+    t0 = time.time()
     MRLargestVocabulary.run()
-    #t1 = time.time()
+    t1 = time.time()
 
-    #print "The execution time was {}".format(t1-t0)
+    print "The execution time was {}".format(t1-t0)
