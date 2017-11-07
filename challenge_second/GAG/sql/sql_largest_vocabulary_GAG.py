@@ -35,8 +35,6 @@ def query(subreddit_id):
 		comment = comment.lower()
 		comment = comment.translate(string.maketrans("",""), string.punctuation)
 
-		print comment
-
 		for word in set(comment.split()):
 			all_words.append(word)
 		# ====================== end of cleaning ====================================
@@ -59,8 +57,9 @@ if __name__ == '__main__':
 		# Get the cursor object
 		
 		subreddit_nr = 0 #subreddit_nr var i..
-		cur.execute("SELECT DISTINCT LOWER(id) FROM subreddits LIMIT 1")   #(%s, %s, %s)", (var1, var2, var3))
-		
+		#cur.execute("SELECT DISTINCT LOWER(id) FROM subreddits LIMIT 1")   #(%s, %s, %s)", (var1, var2, var3))
+		cur.execute("SELECT DISTINCT LOWER(id) FROM subreddits WHERE id='t5_2qh0u'") 
+		#cur.execute("SELECT DISTINCT id FROM subreddits where id = 't5_2fwo'")
 		
 		t3 = time.time()
 
