@@ -1,0 +1,22 @@
+(u't5_1a8ah',) 484  number of words 4324
+(u't5_1efbr',) 1414  number of words 4307
+(u't5_1rqwi',) 4139  number of words 13630
+(u't5_21n6',) 1  number of words 13
+(u't5_21nj',) 11  number of words 94
+(u't5_21of',) 215  number of words 1724
+(u't5_22i0',) 14392  number of words 58131
+(u't5_22i2',) 151  number of words 1778
+(u't5_22i6',) 21  number of words 95
+(u't5_2478',) 1  number of words 13
+(u't5_247a',) 1  number of words 6
+(u't5_247b',) 4  number of words 226
+(u't5_247c',) 4  number of words 43
+(u't5_247e',) 15  number of words 44
+(u't5_247i',) 21  number of words 137
+
+ 601.648200035 fyrir 50 set
+
+
+
+
+
