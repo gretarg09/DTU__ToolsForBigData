@@ -9,25 +9,19 @@ con.text_factory = str
 cur = con.cursor()
 
 def query(subreddit_id):
-    # make a querey search
-	#subreddit_id,cur = subreddit_id 
 
-	t1 = time.time()
 	symbols = ['\n','`','~','!','@','#','$','%','^','&','*','(',')','_','-','+','=','{','[',']','}','|','\\',':',';','"',"'",'<','>','.','?','/',',']
 
 	cur.execute(""" 
-	SELECT DISTINCT body 
+	SELECT body 
 	FROM comments
 	WHERE subreddit_id = ?
 	""",
 	subreddit_id)
 
-	# Fetch the resulting data
-	data = cur.fetchall()
-	# here we will have all our unique words, except the first distrinct words
-	all_words = []
+	all_words = set()
 
-	for d in data:
+	for d in cur.fetchall():
 		# extract the data of the tuple
 		comment = d[0]
 
@@ -36,45 +30,32 @@ def query(subreddit_id):
 		comment = comment.translate(string.maketrans("",""), string.punctuation)
 
 		for word in set(comment.split()):
-			all_words.append(word)
+			all_words.add(word)
 		# ====================== end of cleaning ====================================
 
-	#print set(all_words)
-	t2 = time.time()
-	#print all_words
 
-	nr_of_words = len(set(all_words))
+	nr_of_words = len(all_words)
 
-	#print "{} time: {} word: {}".format(subreddit_id, t1-t2, nr_of_words)
-
-	return (len(set(all_words)), subreddit_id)
+	return (nr_of_words, subreddit_id)
 
 
 if __name__ == '__main__':
 
 	with con:
 
-		# Get the cursor object
-		
-		subreddit_nr = 0 #subreddit_nr var i..
 		#cur.execute("SELECT DISTINCT LOWER(id) FROM subreddits LIMIT 1")   #(%s, %s, %s)", (var1, var2, var3))
 		cur.execute("SELECT DISTINCT LOWER(id) FROM subreddits WHERE id='t5_2qh0u'") 
 		#cur.execute("SELECT DISTINCT id FROM subreddits where id = 't5_2fwo'")
 		
 		t3 = time.time()
-
-		p = Pool(100)
-
+		p = Pool(8)
 		results = p.map(query, cur.fetchall())
 		
 		for result in results:
 			print result
 
-
 		p.close()
-		# for d in cur.fetchall():
-		# 	bla = query(d)
-		# 	print bla
+
 		t4 = time.time()
 
 		print "Execution time {}".format(t4-t3)
