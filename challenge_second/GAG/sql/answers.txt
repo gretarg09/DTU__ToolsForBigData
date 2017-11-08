@@ -1,22 +1,18 @@
-(u't5_1a8ah',) 484  number of words 4324
-(u't5_1efbr',) 1414  number of words 4307
-(u't5_1rqwi',) 4139  number of words 13630
-(u't5_21n6',) 1  number of words 13
-(u't5_21nj',) 11  number of words 94
-(u't5_21of',) 215  number of words 1724
-(u't5_22i0',) 14392  number of words 58131
-(u't5_22i2',) 151  number of words 1778
-(u't5_22i6',) 21  number of words 95
-(u't5_2478',) 1  number of words 13
-(u't5_247a',) 1  number of words 6
-(u't5_247b',) 4  number of words 226
-(u't5_247c',) 4  number of words 43
-(u't5_247e',) 15  number of words 44
-(u't5_247i',) 21  number of words 137
 
- 601.648200035 fyrir 50 set
+Fyrstu 20
+
+Gretars-MacBook-Pro:sql GretarAtli$ python ex1_m.py
+[(122220, ('t5_2cneq',)), (59889, ('t5_22i0',)), (59107, ('t5_2fwo',)), (32615, ('t5_2qgzt',)), (22648, ('t5_2qgzg',)), (14693, ('t5_1rqwi',)), (4368, ('t5_1efbr',)), (4339, ('t5_1a8ah',)), (1712, ('t5_2h84o',)), (1698, ('t5_21of',))]
+Execution time 4.77065896988
 
 
+Fyrstu 100
 
+Gretars-MacBook-Pro:sql GretarAtli$ python ex1_m.py
+[(840691, ('t5_2qh1i',)), (272026, ('t5_2qh33',)), (265364, ('t5_2qh13',)), (248366, ('t5_2qh0u',)), (223691, ('t5_2qh1e',)), (140199, ('t5_2qh03',)), (136640, ('t5_2qh22',)), (122220, ('t5_2cneq',)), (103572, ('t5_2qh1q',)), (101464, ('t5_2qh2p',))]
+Execution time 381.219116926
 
+Fyrstu 10000
+[(840691, ('t5_2qh1i',)), (272026, ('t5_2qh33',)), (265364, ('t5_2qh13',)), (248366, ('t5_2qh0u',)), (248063, ('t5_2qqjc',)), (237975, ('t5_2rfxx',)), (223691, ('t5_2qh1e',)), (203183, ('t5_2sgp1',)), (191093, ('t5_2qmg3',)), (185460, ('t5_2s7tt',))]
+Execution time 1120.32930398
 

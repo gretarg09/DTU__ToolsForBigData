@@ -2,6 +2,7 @@ import sqlite3
 import time
 from multiprocessing import Process, Pool
 import string
+import heapq
 
 
 con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
@@ -29,8 +30,10 @@ def query(subreddit_id):
 		comment = comment.lower()
 		comment = comment.translate(string.maketrans("",""), string.punctuation)
 
-		for word in set(comment.split()):
-			all_words.add(word)
+		all_words.update(comment.split())
+
+		#for word in set(comment.split()):
+		#	all_words.add(word)
 		# ====================== end of cleaning ====================================
 
 
@@ -43,18 +46,18 @@ if __name__ == '__main__':
 
 	with con:
 
-		#cur.execute("SELECT DISTINCT LOWER(id) FROM subreddits LIMIT 1")   #(%s, %s, %s)", (var1, var2, var3))
-		cur.execute("SELECT DISTINCT LOWER(id) FROM subreddits WHERE id='t5_2qh0u'") 
+		cur.execute("SELECT DISTINCT LOWER(id) FROM subreddits LIMIT 100")   #(%s, %s, %s)", (var1, var2, var3))
+		#cur.execute("SELECT DISTINCT LOWER(id) FROM subreddits WHERE id='t5_2qh0u'") 
 		#cur.execute("SELECT DISTINCT id FROM subreddits where id = 't5_2fwo'")
 		
 		t3 = time.time()
 		p = Pool(8)
+
 		results = p.map(query, cur.fetchall())
 		
-		for result in results:
-			print result
-
 		p.close()
+
+		print heapq.nlargest(10, results)
 
 		t4 = time.time()
 
