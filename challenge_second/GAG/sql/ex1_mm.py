@@ -44,7 +44,6 @@ def preprocessing_data():
 
 if __name__ == '__main__':
 
-	with con:
 
 		#cur.execute("SELECT DISTINCT LOWER(id) FROM subreddits LIMIT 1")   #(%s, %s, %s)", (var1, var2, var3))
 		cur.execute("SELECT DISTINCT LOWER(id) FROM subreddits WHERE id='t5_2qh0u'") 
