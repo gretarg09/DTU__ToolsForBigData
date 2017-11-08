@@ -16,7 +16,6 @@ cur = con.cursor()
 def query(subreddit_id):
 	# make a querey search
 	#subreddit_id,cur = subreddit_id 
-	with con:
 		
 		cur.execute(""" 
 		SELECT DISTINCT body 
@@ -53,6 +52,7 @@ def query(subreddit_id):
 if __name__ == '__main__':
 
 
+	t3 = datetime.now()
 	with con:
 
 		# Get the cursor object
@@ -62,39 +62,38 @@ if __name__ == '__main__':
 		
 		
 
-	t3 = datetime.now()
+	with con:
+		p = Pool(10)
 
-	p = Pool(10)
+		result = p.map(query, cur.fetchall())
 
-	result = p.map(query, cur.fetchall())
-
-	
-	p.close()
-	p.join()
-	p.terminate()
-	print result
-	
-	t4 = datetime.now()
-	print
-	result_for_file = []
-	fetch = ""
-	for i in sorted(result, reverse = True)[:10]:
-		cur.execute("select name from subreddits  where id = ?",i[1])
-		fetch = cur.fetchall()[0][0]
-		print i, fetch
-		result_for_file.append(str(i[0]) +"     " + str(i[1][0]) + "      " + fetch)
+		
+		p.close()
+		p.join()
+		p.terminate()
+		print result
+		
+		t4 = datetime.now()
+		print
+		result_for_file = []
+		fetch = ""
+		for i in sorted(result, reverse = True)[:10]:
+			cur.execute("select name from subreddits  where id = ?",i[1])
+			fetch = cur.fetchall()[0][0]
+			print i, fetch
+			result_for_file.append(str(i[0]) +"     " + str(i[1][0]) + "      " + fetch)
 
 
-	print "The time", t4-t3
+		print "The time", t4-t3
 
-	file = open("big_tools_res","w") 
+		file = open("big_tools_res","w") 
 
-	file.write("the time was: {}".format(t4-t3)) 
-	file.write("\n") 
-	for res in result_for_file:
-		file.write(res + "\n") 
-	 
-	 
-	file.close() 
+		file.write("the time was: {}".format(t4-t3)) 
+		file.write("\n") 
+		for res in result_for_file:
+			file.write(res + "\n") 
+		 
+		 
+		file.close() 
 
 
