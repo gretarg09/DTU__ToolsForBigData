@@ -46,9 +46,9 @@ if __name__ == '__main__':
 
 	with con:
 
-		cur.execute("SELECT DISTINCT LOWER(id) FROM subreddits LIMIT 100")   #(%s, %s, %s)", (var1, var2, var3))
-		#cur.execute("SELECT DISTINCT LOWER(id) FROM subreddits WHERE id='t5_2qh0u'") 
-		#cur.execute("SELECT DISTINCT id FROM subreddits where id = 't5_2fwo'")
+		cur.execute("SELECT id FROM subreddits LIMIT 100")   #(%s, %s, %s)", (var1, var2, var3))
+		#cur.execute("SELECT id FROM subreddits WHERE id='t5_2qh0u'") 
+		#cur.execute("SELECT id FROM subreddits where id = 't5_2fwo'")
 		
 		t3 = time.time()
 		p = Pool(8)
@@ -57,9 +57,17 @@ if __name__ == '__main__':
 		
 		p.close()
 
-		print heapq.nlargest(10, results)
+		top_ten = heapq.nlargest(10, results)
 
-		t4 = time.time()
+		result_for_file = []
+		fetch = ""
+		for i in top_ten:
+			cur.execute("select name from subreddits  where id = ?",i[1])
+			fetch = cur.fetchall()[0][0]
+			print i, fetch
+			result_for_file.append(str(i[0]) +"     " + str(i[1][0]) + "      " + fetch)
+
+			t4 = time.time()
 
 		print "Execution time {}".format(t4-t3)
 		
