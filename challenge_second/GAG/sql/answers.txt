@@ -1,16 +1,32 @@
 
 Fyrstu 20
 
-Gretars-MacBook-Pro:sql GretarAtli$ python ex1_m.py
-[(122220, ('t5_2cneq',)), (59889, ('t5_22i0',)), (59107, ('t5_2fwo',)), (32615, ('t5_2qgzt',)), (22648, ('t5_2qgzg',)), (14693, ('t5_1rqwi',)), (4368, ('t5_1efbr',)), (4339, ('t5_1a8ah',)), (1712, ('t5_2h84o',)), (1698, ('t5_21of',))]
-Execution time 4.77065896988
+(122220, ('t5_2cneq',)) politics
+(59889, ('t5_22i0',)) de
+(59107, ('t5_2fwo',)) programming
+(32615, ('t5_2qgzt',)) gadgets
+(22648, ('t5_2qgzg',)) business
+(14693, ('t5_1rqwi',)) netsec
+(4368, ('t5_1efbr',)) ads
+(4339, ('t5_1a8ah',)) obama
+(1712, ('t5_2h84o',)) bugs
+(1698, ('t5_21of',)) olympics
+Execution time 3.11855602264
 
 
 Fyrstu 100
 
-Gretars-MacBook-Pro:sql GretarAtli$ python ex1_m.py
-[(840691, ('t5_2qh1i',)), (272026, ('t5_2qh33',)), (265364, ('t5_2qh13',)), (248366, ('t5_2qh0u',)), (223691, ('t5_2qh1e',)), (140199, ('t5_2qh03',)), (136640, ('t5_2qh22',)), (122220, ('t5_2cneq',)), (103572, ('t5_2qh1q',)), (101464, ('t5_2qh2p',))]
-Execution time 381.219116926
+(840691, ('t5_2qh1i',)) AskReddit
+(272026, ('t5_2qh33',)) funny
+(265364, ('t5_2qh13',)) worldnews
+(248366, ('t5_2qh0u',)) pics
+(223691, ('t5_2qh1e',)) videos
+(140199, ('t5_2qh03',)) gaming
+(136640, ('t5_2qh22',)) anime
+(122220, ('t5_2cneq',)) politics
+(103572, ('t5_2qh1q',)) india
+(101464, ('t5_2qh2p',)) atheism
+Execution time 308.878391981
 
 Fyrstu 10000
 [(840691, ('t5_2qh1i',)), (272026, ('t5_2qh33',)), (265364, ('t5_2qh13',)), (248366, ('t5_2qh0u',)), (248063, ('t5_2qqjc',)), (237975, ('t5_2rfxx',)), (223691, ('t5_2qh1e',)), (203183, ('t5_2sgp1',)), (191093, ('t5_2qmg3',)), (185460, ('t5_2s7tt',))]
