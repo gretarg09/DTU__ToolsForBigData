@@ -56,7 +56,7 @@ if __name__ == '__main__':
 	
 	p.close()
 
-	top_ten = heapq.nlargest(10, results)
+(	top_ten = heapq.nlargest(10, results)
 
 	result_for_file = []
 	fetch = ""
@@ -68,5 +68,5 @@ if __name__ == '__main__':
 
 	t2 = time.time()
 
-	print "Execution time {}".format(t2-t1)
+	print "Execution time {}".format(t2-t1))
 		

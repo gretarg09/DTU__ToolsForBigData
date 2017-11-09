@@ -35,3 +35,27 @@ Fyrstu 10000
 [(840691, ('t5_2qh1i',)), (272026, ('t5_2qh33',)), (265364, ('t5_2qh13',)), (248366, ('t5_2qh0u',)), (248063, ('t5_2qqjc',)), (237975, ('t5_2rfxx',)), (223691, ('t5_2qh1e',)), (203183, ('t5_2sgp1',)), (191093, ('t5_2qmg3',)), (185460, ('t5_2s7tt',))]
 Execution time 1120.32930398
 
+
+
+ARI þriðja dæmið
+
+
+## & Subreddit                 & Average Depth   & Time           
+1. & EroticRolePlay            & 280.67          & 6.56  (u't5_2zlk4',) \\
+2. & counting                  & 262.92          & 15.67  (u't5_2u9jq',) \\
+3. & SburbRP                   & 164.39          & 2.34  (u't5_33wg4',) \\
+4. & TheTwoCenturions          & 149.50          & 0.03  (u't5_366p4',) \\
+5. & RidersOfBerk              & 95.00           & 0.03  (u't5_3272o',) \\
+6. & survivorrankdown2         & 75.00           & 0.02  (u't5_332yz',) \\
+7. & roleplayponies            & 74.00           & 0.29  (u't5_2zjgs',) \\
+8. & DigitalMonsterRP          & 70.00           & 0.02  (u't5_359bv',) \\
+9. & ExploreFiction            & 67.96           & 2.29  (u't5_2x15g',) \\
+10. & PrivateFiction            & 63.80           & 3.37  (u't5_32b0g',) \\
+Total Time: 1552.96401596
+Time to get subreddits: 0.0362849235535
+limit = no limit
+pool = 100
+cached = Don't know
+
+
+
