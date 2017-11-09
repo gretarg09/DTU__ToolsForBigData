@@ -17,7 +17,7 @@ def find_avg_depth(subreddit_id):
 				WHERE subreddit_id = ?
 				AND parent_id LIKE 't3%'
 				""",
-				[Subreddit_id] )
+				subreddit_id)
 
 	data = cur.fetchall()
 
@@ -43,8 +43,6 @@ def find_avg_depth(subreddit_id):
 		query_answer = cur.fetchall()
 		sum_of_depths += np.sum(query_answer)
 		total_nrof_comments += len(query_answer) 
-		
-		print  sum_of_depths/total_nrof_comments
 
 	return ( sum_of_depths/total_nrof_comments, subreddit_id)
 
@@ -70,10 +68,10 @@ if __name__ == '__main__':
 	# Get all of the reddit ids
 	#cur.execute("SELECT id FROM subreddits WHERE id = ?",[Subreddit_id])
 	# cur.execute("SELECT id FROM subreddits")
-	cur.execute("SELECT id FROM subreddits LIMIT 3")
+	cur.execute("SELECT id FROM subreddits LIMIT 20")
 
 	# Start a pool of threads
-	p = Pool(8)
+	p = Pool(100)
 
 	results = p.map(find_avg_depth, cur.fetchall())
 	
