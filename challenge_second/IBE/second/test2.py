@@ -19,31 +19,31 @@ conn.text_factory = str
 cur = conn.cursor()
 
 # this varibles are here so we dont have to do the same query many times
-subreddit_id = 'None'
-authors_id_one = []
+#subreddit_id = 'None'
+#authors_id_one = []
 
 
 def comon_author_in_subreddits(subredditts_ids):
 	#print 'hallo'
-	global authors_id_one
-	global subreddit_id
+	#global authors_id_one
+	#global subreddit_id
 	b = random.randint(0, 10)
 	
 	print subredditts_ids
 	subreddit_id_one, subreddit_id_two = subredditts_ids
 
-	if subreddit_id != subreddit_id_one: 
-		print "boom"
-		cur.execute("""
-			SELECT  DISTINCT  author_id
-			FROM comments
-			where	 subreddit_id = ?
-			
-			
-			""", (subreddit_id_one,))
+	#if subreddit_id != subreddit_id_one: 
+	print "boom"
+	cur.execute("""
+		SELECT  DISTINCT  author_id
+		FROM comments
+		where	 subreddit_id = ?
+		
+		
+		""", (subreddit_id_one,))
 
-		authors_id_one = cur.fetchall()
-		subreddit_id = 	subreddit_id_one
+	authors_id_one = cur.fetchall()
+		#subreddit_id = 	subreddit_id_one
 
 	print '1111'
 
