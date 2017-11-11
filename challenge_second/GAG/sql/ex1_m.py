@@ -23,6 +23,7 @@ def query(subreddit_id):
 
 		# ===================== clean the data ======================================
 		translator = str.maketrans(string.punctuation, ' '*len(string.punctuation))
+		#translator = string.maketrans(string.punctuation, ' '*len(string.punctuation))
 		comment = comment.translate(translator).lower()
 
 		all_words.update(comment.split())
