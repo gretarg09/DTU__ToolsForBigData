@@ -5,12 +5,6 @@ import heapq
 import numpy as np
 from multiprocessing import Process, Pool 
 
-
-con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
-con.text_factory = str
-
-cur = con.cursor()
-
 # Function that finds the average depth
 def find_avg_depth(subreddit_id):
 
@@ -27,33 +21,32 @@ def find_avg_depth(subreddit_id):
 	sum_of_depths = 0
 	total_nrof_comments = 0
 
-	for d in cur.fetchall():
-		# Find the depth with a recursive function in sql
-		cur.execute(""" WITH deepness (id,depth) AS 
-					(
-						-- INITIALIZATION  
-						values (?,0)
-		
-						UNION ALL
-		
-						-- RECURSIION STEP
-						SELECT comments.id, deepness.depth+1
-						FROM comments JOIN deepness on comments.parent_id = deepness.id
-					)
-					Select max(depth) from deepness
+	while True:
+		data_comments = cur.fetchmany(10)
+		if data_comments == ():
+			break
+		for d in data_comments:
+			# Find the depth with a recursive function in sql
+			cur.execute(""" WITH deepness (id,depth) AS 
+						(
+							-- INITIALIZATION  
+							values (?,0)
+			
+							UNION ALL
+			
+							-- RECURSIION STEP
+							SELECT comments.id, deepness.depth+1
+							FROM comments JOIN deepness on comments.parent_id = deepness.id
+						)
+						Select max(depth) from deepness
 
-					""", [d[0]])	
+						""", [d[0]])	
 
-		# For each thread we sum up the deepness of the comments
-		# We also sum up the number of toplevel comments within this subreddit ID 
-		query_answer = cur.fetchall()
-		#print (query_answer)
-		for i in query_answer:
-			#print (i)
-			sum_of_depths += i[0]
-
-		#sum_of_depths += np.sum(query_answer)
-		total_nrof_comments += len(query_answer) 
+			# For each thread we sum up the deepness of the comments
+			# We also sum up the number of toplevel comments within this subreddit ID 
+			query_answer = cur.fetchall()
+			sum_of_depths += np.sum(query_answer)
+			total_nrof_comments += len(query_answer) 
 
 	if total_nrof_comments == 0:
 		return ( 0, subreddit_id)
@@ -65,8 +58,13 @@ if __name__ == '__main__':
 
 	t1 = time.time()
 
+	con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
+	con.text_factory = str
+
+	cur = con.cursor()
+
 	#Subreddit_id = 't5_2u9jq'
-	Subreddit_id = 't5_33wg4'
+	#Subreddit_id = 't5_33wg4'
 
 	#print Subreddit_id
 
@@ -75,7 +73,7 @@ if __name__ == '__main__':
 
 	# Get all of the reddit ids
 	#cur.execute("SELECT id FROM subreddits WHERE id = ?",[Subreddit_id])
-	cur.execute("SELECT id FROM subreddits LIMIT 1")
+	cur.execute("SELECT id FROM subreddits LIMIT 100")
 	#cur.execute("SELECT id FROM subreddits")
 
 	# Start a pool of threads
