@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sqlite3
 import time
 from multiprocessing import Process, Pool
@@ -21,9 +22,8 @@ def query(subreddit_id):
 		comment = d[0]
 
 		# ===================== clean the data ======================================
-		comment = comment.lower()
-		translator = string.maketrans(string.punctuation, ' '*len(string.punctuation))
-		comment = comment.translate(translator)
+		translator = str.maketrans(string.punctuation, ' '*len(string.punctuation))
+		comment = comment.translate(translator).lower()
 
 		all_words.update(comment.split())
 		# ====================== end of cleaning ====================================
@@ -60,10 +60,10 @@ if __name__ == '__main__':
 	for i in top_ten:
 		cur.execute("select name from subreddits  where id = ?",i[1])
 		fetch = cur.fetchall()[0][0]
-		print i, fetch
+		print (i, fetch)
 		result_for_file.append(str(i[0]) +"     " + str(i[1][0]) + "      " + fetch)
 
 	t2 = time.time()
 
-	print "Execution time {}".format(t2-t1)
+	print ("Execution time {}".format(t2-t1))
 		

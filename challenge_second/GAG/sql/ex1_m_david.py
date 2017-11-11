@@ -4,10 +4,16 @@ from multiprocessing import Process, Pool
 import string
 import heapq
 
+# Create a connection to the database
+con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
+# Tell sql that to convert the bytes returned by the query using the str function, same as doing str(the_bytes, 'utf-8')
+con.text_factory = str
+cur = con.cursor()
 
-symbols = ['\n','`','~','!','@','#','$','%','^','&','*','(',')','_','-','+','=','{','[',']','}','|','\\',':',';','"',"'",'<','>','.','?','/',',']
 
 def query(subreddit_id):
+
+	symbols = ['\n','`','~','!','@','#','$','%','^','&','*','(',')','_','-','+','=','{','[',']','}','|','\\',':',';','"',"'",'<','>','.','?','/',',']
 
 	cur.execute(""" 
 	SELECT body 
@@ -28,17 +34,16 @@ def query(subreddit_id):
 		for sym in symbols:
 			s = s.replace(sym, " ")
 
-		words = set()
 		for w in s.split(" "):
 			if len(w.replace(" ","")) > 0:
-				words.add(w)
+				all_words.add(w)
 
 
 		#comment = comment.lower()
 		#translator = string.maketrans(string.punctuation, ' '*len(string.punctuation))
 		#comment = comment.translate(translator)
 
-		all_words.update(words)
+		#all_words.update(words)
 		# ====================== end of cleaning ====================================
 
 
@@ -51,12 +56,6 @@ if __name__ == '__main__':
 
 	# Start the timer
 	t1 = time.time()
-
-	# Create a connection to the database
-	con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
-	# Tell sql that to convert the bytes returned by the query using the str function, same as doing str(the_bytes, 'utf-8')
-	con.text_factory = str
-	cur = con.cursor()
 
 	#cur.execute("SELECT id FROM subreddits")   #(%s, %s, %s)", (var1, var2, var3))
 	#cur.execute("SELECT id FROM subreddits WHERE id='t5_2qh0u'") 
