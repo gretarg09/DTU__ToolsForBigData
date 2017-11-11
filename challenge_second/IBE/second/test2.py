@@ -86,7 +86,9 @@ if __name__ == '__main__':
 		while k<3:
 			try:
 				p = Pool(1)
-				result = p.map(comon_author_in_subreddits, cur.fetchmany(5))
+				for i in cur.fetchmany(5):
+					print i
+				result = p.map(comon_author_in_subreddits, cur.fetchmany(1))
 				for i in result:
 					heapq.heappush(best_results, i) #best_results.put(i)
 				p.close()

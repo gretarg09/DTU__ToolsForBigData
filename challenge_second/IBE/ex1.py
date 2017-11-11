@@ -16,7 +16,8 @@ cur = con.cursor()
 def query(subreddit_id):
 	# make a querey search
 	#subreddit_id,cur = subreddit_id 
-		
+	with con:
+
 		cur.execute(""" 
 		SELECT DISTINCT body 
 		FROM comments
@@ -53,6 +54,7 @@ if __name__ == '__main__':
 
 
 	t3 = datetime.now()
+
 	with con:
 
 		# Get the cursor object
@@ -62,7 +64,7 @@ if __name__ == '__main__':
 		
 		
 
-	with con:
+
 		p = Pool(10)
 
 		result = p.map(query, cur.fetchall())
@@ -94,5 +96,3 @@ if __name__ == '__main__':
 		 
 		 
 		file.close() 
-
-

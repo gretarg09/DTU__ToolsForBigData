@@ -5,10 +5,6 @@ import string
 import heapq
 
 
-con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
-con.text_factory = str
-cur = con.cursor()
-
 def query(subreddit_id):
 
 	symbols = ['\n','`','~','!','@','#','$','%','^','&','*','(',')','_','-','+','=','{','[',']','}','|','\\',':',';','"',"'",'<','>','.','?','/',',']
@@ -44,30 +40,33 @@ def query(subreddit_id):
 
 if __name__ == '__main__':
 
-	with con:
+	con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
+	con.text_factory = str
+	cur = con.cursor()
 
-		cur.execute("SELECT id FROM subreddits LIMIT 100")   #(%s, %s, %s)", (var1, var2, var3))
-		#cur.execute("SELECT id FROM subreddits WHERE id='t5_2qh0u'") 
-		#cur.execute("SELECT id FROM subreddits where id = 't5_2fwo'")
-		
-		t3 = time.time()
-		p = Pool(8)
+	t1 = time.time()
 
-		results = p.map(query, cur.fetchall())
-		
-		p.close()
+	cur.execute("SELECT id FROM subreddits")   #(%s, %s, %s)", (var1, var2, var3))
+	#cur.execute("SELECT id FROM subreddits WHERE id='t5_2qh0u'") 
+	#cur.execute("SELECT id FROM subreddits where id = 't5_2fwo'")
+	
+	p = Pool(8)
 
-		top_ten = heapq.nlargest(10, results)
+	results = p.map(query, cur.fetchall())
+	
+	p.close()
 
-		result_for_file = []
-		fetch = ""
-		for i in top_ten:
-			cur.execute("select name from subreddits  where id = ?",i[1])
-			fetch = cur.fetchall()[0][0]
-			print i, fetch
-			result_for_file.append(str(i[0]) +"     " + str(i[1][0]) + "      " + fetch)
+(	top_ten = heapq.nlargest(10, results)
 
-			t4 = time.time()
+	result_for_file = []
+	fetch = ""
+	for i in top_ten:
+		cur.execute("select name from subreddits  where id = ?",i[1])
+		fetch = cur.fetchall()[0][0]
+		print i, fetch
+		result_for_file.append(str(i[0]) +"     " + str(i[1][0]) + "      " + fetch)
 
-		print "Execution time {}".format(t4-t3)
+	t2 = time.time()
+
+	print "Execution time {}".format(t2-t1))
 		
