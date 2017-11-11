@@ -5,6 +5,8 @@ import string
 import heapq
 
 
+symbols = ['\n','`','~','!','@','#','$','%','^','&','*','(',')','_','-','+','=','{','[',']','}','|','\\',':',';','"',"'",'<','>','.','?','/',',']
+
 def query(subreddit_id):
 
 	cur.execute(""" 
@@ -18,14 +20,25 @@ def query(subreddit_id):
 
 	for d in cur.fetchall():
 		# extract the data of the tuple
-		comment = d[0]
+		s= d[0]
 
 		# ===================== clean the data ======================================
-		comment = comment.lower()
-		translator = string.maketrans(string.punctuation, ' '*len(string.punctuation))
-		comment = comment.translate(translator)
 
-		all_words.update(comment.split())
+		s = s.lower()
+		for sym in symbols:
+			s = s.replace(sym, " ")
+
+		words = set()
+		for w in s.split(" "):
+			if len(w.replace(" ","")) > 0:
+				words.add(w)
+
+
+		#comment = comment.lower()
+		#translator = string.maketrans(string.punctuation, ' '*len(string.punctuation))
+		#comment = comment.translate(translator)
+
+		all_words.update(words)
 		# ====================== end of cleaning ====================================
 
 
