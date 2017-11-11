@@ -7,8 +7,6 @@ import heapq
 
 def query(subreddit_id):
 
-	symbols = ['\n','`','~','!','@','#','$','%','^','&','*','(',')','_','-','+','=','{','[',']','}','|','\\',':',';','"',"'",'<','>','.','?','/',',']
-
 	cur.execute(""" 
 	SELECT body 
 	FROM comments
@@ -24,12 +22,9 @@ def query(subreddit_id):
 
 		# ===================== clean the data ======================================
 		comment = comment.lower()
-		comment = comment.translate(string.maketrans("",""), string.punctuation)
+		#comment = comment.translate(string.maketrans("",""), string.punctuation)
 
 		all_words.update(comment.split())
-
-		#for word in set(comment.split()):
-		#	all_words.add(word)
 		# ====================== end of cleaning ====================================
 
 
@@ -40,6 +35,7 @@ def query(subreddit_id):
 
 if __name__ == '__main__':
 
+	# Create a connection to the database
 	con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
 	con.text_factory = str
 	cur = con.cursor()
@@ -56,7 +52,7 @@ if __name__ == '__main__':
 	
 	p.close()
 
-(	top_ten = heapq.nlargest(10, results)
+	top_ten = heapq.nlargest(10, results)
 
 	result_for_file = []
 	fetch = ""
@@ -68,5 +64,5 @@ if __name__ == '__main__':
 
 	t2 = time.time()
 
-	print "Execution time {}".format(t2-t1))
+	print "Execution time {}".format(t2-t1)
 		
