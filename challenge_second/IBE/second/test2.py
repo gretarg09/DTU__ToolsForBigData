@@ -18,22 +18,32 @@ conn = sqlite3.connect('/Users/helga/OneDrive/Documents/ToolsForBigD/challenge2/
 conn.text_factory = str
 cur = conn.cursor()
 
+# this varibles are here so we dont have to do the same query many times
+subreddit_id = 'None'
+authors_id_one = []
+
 
 def comon_author_in_subreddits(subredditts_ids):
 	#print 'hallo'
+	global authors_id_one
+	global subreddit_id
 	b = random.randint(0, 10)
 	
 	print subredditts_ids
 	subreddit_id_one, subreddit_id_two = subredditts_ids
 
-	cur.execute("""
-		SELECT DISTINCT author_id
-		FROM comments
-		where subreddit_id = ?
-		
-		""", (subreddit_id_one,))
+	if subreddit_id != subreddit_id_one: 
+		print "boom"
+		cur.execute("""
+			SELECT  DISTINCT  author_id
+			FROM comments
+			where	 subreddit_id = ?
+			
+			
+			""", (subreddit_id_one,))
 
-	authors_id_one = cur.fetchall()
+		authors_id_one = cur.fetchall()
+		subreddit_id = 	subreddit_id_one
 
 	print '1111'
 
@@ -43,7 +53,9 @@ def comon_author_in_subreddits(subredditts_ids):
 		FROM comments	
 		where subreddit_id = ?
 		
+		
 		""", (subreddit_id_two,))
+	print "1.51.51.51.51.5"
 
 	authors_id_two = cur.fetchall()
 
@@ -85,10 +97,8 @@ if __name__ == '__main__':
 		best_results = []#Queue.PriorityQueue(maxsize=10)
 		while k<3:
 			try:
-				p = Pool(1)
-				for i in cur.fetchmany(5):
-					print i
-				result = p.map(comon_author_in_subreddits, cur.fetchmany(1))
+				p = Pool(15)
+				result = p.map(comon_author_in_subreddits, cur.fetchmany(5))
 				for i in result:
 					heapq.heappush(best_results, i) #best_results.put(i)
 				p.close()
