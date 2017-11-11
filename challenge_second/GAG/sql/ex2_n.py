@@ -74,8 +74,8 @@ if __name__ == '__main__':
 	print ("")
 
 	# Get all of the reddit ids
-	#cur.execute("SELECT id FROM subreddits WHERE id = ?",[Subreddit_id])
-	cur.execute("SELECT id FROM subreddits LIMIT 1")
+	cur.execute("SELECT id FROM subreddits WHERE id = ?",[Subreddit_id])
+	#cur.execute("SELECT id FROM subreddits LIMIT 1")
 	#cur.execute("SELECT id FROM subreddits")
 
 	# Start a pool of threads
