@@ -25,19 +25,17 @@ def getUniqNameListCount(subreddit_id):
 if __name__ == '__main__':
 
 	print("########### Starting ################")
+	while True:
+		t1 = time.time()
 
-	t1 = time.time()
-
-	cur.execute("""SELECT subreddit_id, count(ROWID) 
+		cur.execute("""SELECT subreddit_id, count(ROWID) 
 					   FROM comments 
 					   GROUP BY subreddit_id""")
 
-	top_n = cur.fetchall()
-	top_n.sort(key=lambda x: x[1],reverse=True)
+		top_n = cur.fetchall()
+		top_n.sort(key=lambda x: x[1],reverse=True)
 
-	t2 = time.time()
-
-	while True:
+		t2 = time.time()
 
 		n = 120 # number of top subreddits Ids
 
@@ -96,7 +94,7 @@ if __name__ == '__main__':
 		if top_n[n][1] <  the_result_sorted[9][1]:
 			break
 		else:
-			n = n + 100
+			n = n + 20
 
 	
 	for key,value in the_result_sorted[0:10]:
@@ -106,4 +104,6 @@ if __name__ == '__main__':
 
 	t8 = time.time()
 	print("Overall execution time {}".format(t8-t1))
+
+
 
