@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
 	t2 = time.time()
 
-	n = 2 # number of top subreddits Ids
+	n = 10 # number of top subreddits Ids
 
 	for i in top_n[0:n]:
 		print (i)
@@ -84,9 +84,9 @@ if __name__ == '__main__':
 
 	print("Finding the intersection execution time {}".format(t7-t6))
 
-	the_result_sorted = sorted(the_result.items(), key=operator.itemgetter(1))
+	the_result_sorted = sorted(the_result.items(), key=operator.itemgetter(1), reverse = True)
 	
-	for key,value in the_result_sorted:
+	for key,value in the_result_sorted[0:10]:
 		name1 = cur.execute("SELECT name FROM subreddits WHERE id = ?",[key[0]]).fetchall()
 		name2 = cur.execute("SELECT name FROM subreddits WHERE id = ?",[key[1]]).fetchall()
 		print("{},{} - {}".format(name1,name2,value))
