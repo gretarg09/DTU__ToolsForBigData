@@ -37,16 +37,41 @@ if __name__ == '__main__':
 	t2 = time.time()
 
 	for i in top_10[0:10]:
-		print i
+		print (i)
 
 	print("######### First step Finished #########")
 	print("Execution time {}".format(t2-t1))	
 
-
-
-
 	# Next step is to take the subreddit_ids that have the most comments 
 	# and find all of the authors that they do have in common 
+
+	# First I get all the unique authors of these subreddit Ids
+
+	t3 = time.time()
+
+	p = Pool(10)
+	results = p.map(getUniqNameListCount, [i[0] for i in top_10[0:10]])
+	p.close()
+
+	t4 = time.time()
+
+	print("######### Second step Finished #########")
+	print("Execution time {}".format(t4-t3))
+
+	print(results[0])
+
+	# Add the result into a default dict 
+
+	t5 = time.time()
+	top_10_distinctAuthors = defaultdict(set)
+
+	# Find the common authors of the pairs
+	for result in results:
+		top_10_distinctAuthors[results[0]] = results[1]
+
+	t6 = time.time()
+
+	print("Adding dictionary execution time {}".format(t6-t5))
 
 
 
