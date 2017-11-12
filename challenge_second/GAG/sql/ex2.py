@@ -2,10 +2,10 @@ from __future__ import division,print_function
 import sqlite3
 import time
 import heapq
-import numpy as np
 from multiprocessing import Process, Pool 
 from itertools import combinations
 from collections import defaultdict
+from itertools import combinations
 
 
 con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
@@ -31,12 +31,14 @@ if __name__ == '__main__':
 				   GROUP BY subreddit_id""")
 
 
-	top_10 = cur.fetchall()
-	top_10.sort(key=lambda x: x[1],reverse=True)
+	top_n = cur.fetchall()
+	top_n.sort(key=lambda x: x[1],reverse=True)
 
 	t2 = time.time()
 
-	for i in top_10[0:10]:
+	n = 2 # number of top subreddits Ids
+
+	for i in top_n[0:n]:
 		print (i)
 
 	print("######### First step Finished #########")
@@ -49,9 +51,10 @@ if __name__ == '__main__':
 
 	t3 = time.time()
 
-	p = Pool(10)
-	results = p.map(getUniqNameListCount, [i[0] for i in top_10[0:10]])
+	p = Pool(n)
+	results = p.map(getUniqNameListCount, [i[0] for i in top_10[0:n]])
 	p.close()
+	p.join()
 
 	t4 = time.time()
 
@@ -63,18 +66,24 @@ if __name__ == '__main__':
 	# Add the result into a default dict 
 
 	t5 = time.time()
-	top_10_distinctAuthors = defaultdict(set)
+	top_n_distinctAuthors = defaultdict(set)
 
 	# Find the common authors of the pairs
 	for result in results:
-		top_10_distinctAuthors[results[0]] = results[1]
+		top_n_distinctAuthors[results[1]] = results[0]
 
 	t6 = time.time()
 
 	print("Adding dictionary execution time {}".format(t6-t5))
 
+	the_result = defaultdict(int)
+
+	# Now we use iteritem combination to get find the the number of common authors between pairs
+	#for i in combinations(top_n_distinctAuthors.keys, 2):
+	#	the_result[i] = 
 
 
+	print("Overall execution time {}".format(t6-t1))
 
 
 
