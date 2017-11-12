@@ -6,6 +6,7 @@ from multiprocessing import Process, Pool
 from itertools import combinations
 from collections import defaultdict
 from itertools import combinations
+import operator
 
 
 con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
@@ -15,8 +16,9 @@ cur = con.cursor()
 
 def getUniqNameListCount(subreddit_id):
 	#print("Running for {}".format(subreddit_id))
+	print (subreddit_id)
 	cur.execute("SELECT author_id FROM comments WHERE subreddit_id = ?",[subreddit_id])
-	return (set([i[0] for i in cur.fetchall()]),subreddit_id )
+	return ([i[0] for i in cur.fetchall()], subreddit_id)
 
 
 
@@ -29,7 +31,6 @@ if __name__ == '__main__':
 	cur.execute("""SELECT subreddit_id, count(ROWID) 
 				   FROM comments 
 				   GROUP BY subreddit_id""")
-
 
 	top_n = cur.fetchall()
 	top_n.sort(key=lambda x: x[1],reverse=True)
@@ -52,25 +53,22 @@ if __name__ == '__main__':
 	t3 = time.time()
 
 	p = Pool(n)
-	results = p.map(getUniqNameListCount, [i[0] for i in top_10[0:n]])
+	results = p.map(getUniqNameListCount, [i[0] for i in top_n[0:n]])
+	#results = p.map(getUniqNameListCount, ['t5_2qh61', 't5_2t9x3'])
 	p.close()
-	p.join()
+	#p.join()
 
 	t4 = time.time()
 
 	print("######### Second step Finished #########")
 	print("Execution time {}".format(t4-t3))
 
-	print(results[0])
-
 	# Add the result into a default dict 
-
 	t5 = time.time()
 	top_n_distinctAuthors = defaultdict(set)
 
-	# Find the common authors of the pairs
 	for result in results:
-		top_n_distinctAuthors[results[1]] = results[0]
+		top_n_distinctAuthors[result[1]] = set(result[0])
 
 	t6 = time.time()
 
@@ -79,11 +77,20 @@ if __name__ == '__main__':
 	the_result = defaultdict(int)
 
 	# Now we use iteritem combination to get find the the number of common authors between pairs
-	#for i in combinations(top_n_distinctAuthors.keys, 2):
-	#	the_result[i] = 
+	for i in combinations(top_n_distinctAuthors.keys(), 2):
+		the_result[i] = len(top_n_distinctAuthors[i[0]].intersection(top_n_distinctAuthors[i[1]] ))
 
+	t7 = time.time()
 
-	print("Overall execution time {}".format(t6-t1))
+	print("Finding the intersection execution time {}".format(t7-t6))
+
+	the_result_sorted = sorted(the_result.items(), key=operator.itemgetter(1))
+	
+	for key,value in the_result_sorted:
+		name1 = cur.execute("SELECT name FROM subreddits WHERE id = ?",[key[0]]).fetchall()
+		name2 = cur.execute("SELECT name FROM subreddits WHERE id = ?",[key[1]]).fetchall()
+		print("{},{} - {}".format(name1,name2,value))
+	print("Overall execution time {}".format(t7-t1))
 
 
 
