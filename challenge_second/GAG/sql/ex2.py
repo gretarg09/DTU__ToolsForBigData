@@ -5,6 +5,7 @@ import heapq
 import numpy as np
 from multiprocessing import Process, Pool 
 from itertools import combinations
+from collections import defaultdict
 
 
 con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
@@ -14,45 +15,42 @@ cur = con.cursor()
 
 def getUniqNameListCount(subreddit_id):
 	#print("Running for {}".format(subreddit_id))
-	cur.execute("SELECT author_id FROM comments WHERE subreddit_id = ?",subreddit_id)
-	return ( len(set([i[0] for i in cur.fetchall()])) ,subreddit_id )
+	cur.execute("SELECT author_id FROM comments WHERE subreddit_id = ?",[subreddit_id])
+	return (set([i[0] for i in cur.fetchall()]),subreddit_id )
 
 
 
 if __name__ == '__main__':
 
+	print("########### Starting ################")
+
 	t1 = time.time()
 
-	print ("########### Starting ################")
+	cur.execute("""SELECT subreddit_id, count(ROWID) 
+				   FROM comments 
+				   GROUP BY subreddit_id""")
 
-	#Subreddit_id = 't5_2qh1i'
-	#Subreddit_id = 't5_2qhli'
 
-	cur.execute("SELECT id FROM subreddits")
-
-	t2 = time.time()
-
-		# Start a pool of threads
-	p = Pool(100)
-
-	results = p.map(getUniqNameListCount, cur.fetchall())
-	
-	p.close()
-
- 
-	top_ten = heapq.nlargest(10, results)
-
-	result_for_file = []
-	fetch = ""
-	for i in top_ten:
-		cur.execute("select name from subreddits  where id = ?",i[1])
-		fetch = cur.fetchall()[0][0]
-		print (i, fetch)
-		result_for_file.append(str(i[0]) +"     " + str(i[1][0]) + "      " + fetch)
+	top_10 = cur.fetchall()
+	top_10.sort(key=lambda x: x[1],reverse=True)
 
 	t2 = time.time()
 
-	print ("Execution time {}".format(t2-t1))
+	for i in top_10[0:10]:
+		print i
 
-	print ("\n######### ENDING #########")
-	print
+	print("######### First step Finished #########")
+	print("Execution time {}".format(t2-t1))	
+
+
+
+
+	# Next step is to take the subreddit_ids that have the most comments 
+	# and find all of the authors that they do have in common 
+
+
+
+
+
+
+
