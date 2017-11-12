@@ -100,7 +100,7 @@ if __name__ == '__main__':
 	for key,value in the_result_sorted[0:10]:
 		name1 = cur.execute("SELECT name FROM subreddits WHERE id = ?",[key[0]]).fetchall()
 		name2 = cur.execute("SELECT name FROM subreddits WHERE id = ?",[key[1]]).fetchall()
-		print("{},{} - {}".format(name1[0],name2[0],value))
+		print("{},{} - {}".format(name1[0][0],name2[0][0],value))
 
 	t8 = time.time()
 	print("Overall execution time {}".format(t8-t1))
