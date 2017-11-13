@@ -14,7 +14,7 @@ cur = con.cursor()
 # Function that finds the average depth
 def find_avg_depth(subreddit_id):
 
-	# For each subreddit find all of the top level threads. 
+	# For each subreddit find all of the top level comments. 
 	# They can be identified by the fact that they all start with t3
 	cur.execute(""" 
 				SELECT id
@@ -27,6 +27,8 @@ def find_avg_depth(subreddit_id):
 	sum_of_depths = 0
 	total_nrof_comments = 0
 
+	# For each top level comment find the dept of the corresponding comment thread 
+	# We achieved this with a recursive function in sql (CTE in sql)
 	for d in cur.fetchall():
 		# Find the depth with a recursive function in sql
 		cur.execute(""" WITH deepness (id,depth) AS 
@@ -47,14 +49,14 @@ def find_avg_depth(subreddit_id):
 		# For each thread we sum up the deepness of the comments
 		# We also sum up the number of toplevel comments within this subreddit ID 
 		query_answer = cur.fetchall()
-		#print (query_answer)
+
 		for i in query_answer:
 			#print (i)
 			sum_of_depths += i[0]
 
-		#sum_of_depths += np.sum(query_answer)
 		total_nrof_comments += len(query_answer) 
 
+	# If there are no comments associated with this subreddit Id then we simply return 0
 	if total_nrof_comments == 0:
 		return ( 0, subreddit_id)
 	else:
@@ -65,29 +67,21 @@ if __name__ == '__main__':
 
 	t1 = time.time()
 
-	#Subreddit_id = 't5_2u9jq'
-	Subreddit_id = 't5_33wg4'
-
-	#print Subreddit_id
-
 	print ("\n######### STARTING #########")
 	print ("")
 
 	# Get all of the reddit ids
-	cur.execute("SELECT id FROM subreddits WHERE id = ?",[Subreddit_id])
-	#cur.execute("SELECT id FROM subreddits LIMIT 1")
-	#cur.execute("SELECT id FROM subreddits")
+	cur.execute("SELECT id FROM subreddits")
 
-	# Start a pool of threads
+	# Start multiprocessing
 	p = Pool(100)
-
 	results = p.map(find_avg_depth, cur.fetchall())
-	
 	p.close()
 
- 
+ 	# Find the 10 subreddits with deepest average comment threads 
 	top_ten = heapq.nlargest(10, results)
 
+	# Print out the result
 	result_for_file = []
 	fetch = ""
 	for i in top_ten:
