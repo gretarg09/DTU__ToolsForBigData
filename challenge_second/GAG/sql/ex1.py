@@ -12,8 +12,10 @@ con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigDat
 con.text_factory = str
 cur = con.cursor()
 
+# Function that takes in subreddit_id and creates a vocabulary bases on all comments associated with the subreddit-id
 def query(subreddit_id):
 
+	# Get all comments associated with the subreddit-id
 	cur.execute(""" 
 	SELECT body 
 	FROM comments
@@ -22,19 +24,18 @@ def query(subreddit_id):
 	subreddit_id)
 
 	all_words = set()
-
 	for d in cur.fetchall():
-		# extract the data of the tuple
-		comment = d[0]
 
-		# ===================== clean the data ======================================
+		comment = d[0]		# extract the data from the tuple
+
+		# Clean the comment and get all distinct words
 		translator = str.maketrans(string.punctuation, ' '*len(string.punctuation))
 		comment = comment.translate(translator).lower()
 
+
 		all_words.update(comment.split())
-		# ====================== end of cleaning ====================================
 
-
+	# Find the size of the vocabulary
 	nr_of_words = len(all_words)
 
 	return (nr_of_words, subreddit_id)
@@ -45,12 +46,15 @@ if __name__ == '__main__':
 	# Start the timer
 	t1 = time.time()
 
+	# Get all subreddit ids
 	cur.execute("SELECT id FROM subreddits")  
 	
+	# Start multiprocessing
 	p = Pool(8)
 	results = p.map(query, cur.fetchall())
 	p.close()
 
+	# Return the 10 subreddits with the largest vocabularies
 	top_ten = heapq.nlargest(10, results)
 
 	result_for_file = []
