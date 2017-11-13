@@ -33,7 +33,7 @@ def find_avg_depth(subreddit_id):
 		# Find the depth with a recursive function in sql
 		cur.execute(""" WITH deepness (id,depth) AS 
 					(
-						-- INITIALIZATION  
+						-- INITIALIZATION  STEP
 						values (?,0)
 		
 						UNION ALL
