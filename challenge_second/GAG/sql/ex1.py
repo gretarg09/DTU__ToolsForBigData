@@ -47,7 +47,7 @@ if __name__ == '__main__':
 	t1 = time.time()
 
 	# Get all subreddit ids
-	cur.execute("SELECT id FROM subreddits")  
+	cur.execute("SELECT id FROM subreddits WHERE id = 't5_2qh13'")  
 	
 	# Start multiprocessing
 	p = Pool(8)

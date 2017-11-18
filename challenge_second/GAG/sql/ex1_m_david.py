@@ -1,81 +1,99 @@
+import multiprocessing as mp
 import sqlite3
 import time
-from multiprocessing import Process, Pool
-import string
-import heapq
+from collections import Counter
 
-# Create a connection to the database
-con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
-# Tell sql that to convert the bytes returned by the query using the str function, same as doing str(the_bytes, 'utf-8')
-con.text_factory = str
-cur = con.cursor()
+conn = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
+
+cursor = conn.cursor()
+start_time = time.time()
 
 
-def query(subreddit_id):
+def query_init():
+    subreddits = []
+    for row in cursor.execute("SELECT id FROM subreddits"):
+        subreddits.append(row)
+    return subreddits
 
-	symbols = ['\n','`','~','!','@','#','$','%','^','&','*','(',')','_','-','+','=','{','[',']','}','|','\\',':',';','"',"'",'<','>','.','?','/',',']
+def deepening(row):
+    con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
+    c = con.cursor()
+    value = 0
+    done = False
+    while not done:
+        items = c.execute("SELECT id, subreddit_id, parent_id FROM comments WHERE parent_id = ?", (row[0],)).fetchall()
+        if not items:
+            done = True
+        for a in items:
+            # deepening(a)
+            row = a
+            value += 1
+    # print("DEPTH", value, row[1])
+    return value, row[1]
 
-	cur.execute(""" 
-	SELECT body 
-	FROM comments
-	WHERE subreddit_id = ?
-	""",
-	subreddit_id)
+def find_depth(chunks):
+    top_ten = [("", 0)] * 10
+    con = sqlite3.connect('/Users/GretarAtli/Documents/GitHub/Dtu/Dtu-ToolsForBigData/challenge_second/GAG/reddit.db')
+    c = con.cursor()
 
-	all_words = set()
+    for i, subreddit in enumerate(chunks):
+        values = [("", 0)]
+        mean_value = c.execute("SELECT count(*) FROM comments WHERE parent_id  LIKE 't3%' AND subreddit_id = :subreddit", subreddit).fetchone()
+        for row in c.execute("SELECT id, subreddit_id, parent_id FROM comments WHERE parent_id LIKE 't3%' AND subreddit_id = :subreddit", subreddit):
+            value = deepening(row)
+            # internalvalue += value[0]
+            #
+            curval = values[0][1] + value[0]
+            if value[0] > values[0][1]:
+                values[0] = (value[1],curval)
+            else:
+                values[0] = (values[0][0], curval)
+        if mean_value[0]:
+            values[0] = (values[0][0], values[0][1]/mean_value[0])
+        else:
+            values[0] = (values[0][0], values[0][1] / 1)
+        if values[0] not in top_ten:
+            depth = values[0][1]
+            for i, item in enumerate(top_ten):
+                if depth > item[1]:
+                    top_ten[i] = values[0]
+                    break
 
-	for d in cur.fetchall():
-		# extract the data of the tuple
-		s= d[0]
-
-		# ===================== clean the data ======================================
-
-		s = s.lower()
-		for sym in symbols:
-			s = s.replace(sym, " ")
-
-		for w in s.split(" "):
-			if len(w.replace(" ","")) > 0:
-				all_words.add(w)
+    print("Finished")
+    print(top_ten)
+    return top_ten
 
 
-		#comment = comment.lower()
-		#translator = string.maketrans(string.punctuation, ' '*len(string.punctuation))
-		#comment = comment.translate(translator)
-
-		#all_words.update(words)
-		# ====================== end of cleaning ====================================
+def chunk(list):
+    chunks = int(float(len(list) / 32))
+    return chunks
 
 
-	nr_of_words = len(all_words)
+def buildargs(chunks):
+    for i in range(32):
+        yield [chunks[i]]
 
-	return (nr_of_words, subreddit_id)
 
 
 if __name__ == '__main__':
 
-	# Start the timer
-	t1 = time.time()
+    subreddits = query_init()
+    chunk = chunk(subreddits)
+    chunks = []
+    for i in range(32):
+        if i != 31:
+            chunks.append(subreddits[chunk * i:chunk * (i + 1)])
+        else:
+            chunks.append(subreddits[chunk * i:])
 
-	#cur.execute("SELECT id FROM subreddits")   #(%s, %s, %s)", (var1, var2, var3))
-	#cur.execute("SELECT id FROM subreddits WHERE id='t5_2qh0u'") 
-	cur.execute("SELECT id FROM subreddits where id = 't5_2fwo'")
-	
-	p = Pool(8)
-	results = p.map(query, cur.fetchall())
-	p.close()
-
-	top_ten = heapq.nlargest(10, results)
-
-	result_for_file = []
-	fetch = ""
-	for i in top_ten:
-		cur.execute("select name from subreddits  where id = ?",i[1])
-		fetch = cur.fetchall()[0][0]
-		print i, fetch
-		result_for_file.append(str(i[0]) +"     " + str(i[1][0]) + "      " + fetch)
-
-	t2 = time.time()
-
-	print "Execution time {}".format(t2-t1)
-		
+    with mp.Pool(processes=32) as pool:
+        # args = buildargs(chunks)
+        results = pool.starmap(find_depth, list(buildargs(chunks)))
+        lengths = []
+        reds = []
+        counter = Counter()
+        for res in results:
+            for elem in res:
+                counter[elem[0]] = elem[1]
+        print(counter.most_common(10))
+    print("--- %s seconds ---" % (time.time() - start_time))
