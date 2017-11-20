@@ -29,25 +29,25 @@ def comon_author_in_subreddits(ids):
 	
 
 	cur.execute(""" 
-			SELECT COUNT(author_id), subreddit_id, ?
+			SELECT author_id, subreddit_id, ?
 			FROM comments
 			WHERE subreddit_id <> ?
 			AND  subreddit_id < ?
 			AND  author_id = ?
-			GROUP BY author_id, ? 
-			ORDER BY COUNT(DISTINCT author_id)
+
 			"""
-			,(subreddit_id, subreddit_id, subreddit_id, author_id, author_id))
+			,(subreddit_id, subreddit_id, subreddit_id, author_id))
 
 	#print cur.fetchall()
-	try:
 		
-		res = cur.fetchone()
-		count_aouthor, subreddit_id, subreddit_id2 =  res
-		return  (count_aouthor, subreddit_id, subreddit_id2)
-	except Exception as e:
-		return (0, 'None', 'None')
+	res = cur.fetchone()
 
+	if res != []:
+		#count_aouthor, subreddit_id, subreddit_id2 =  res
+		return  res
+	else:
+		return (0,0,0)
+	
 
 if __name__ == '__main__':
 	print "\nHello Mr Programmer, I'm running..\n"
@@ -65,7 +65,7 @@ if __name__ == '__main__':
 		queue = []
 		while k< 3: 
 			p = Pool(1)
-			result = p.map(comon_author_in_subreddits, cur.fetchmany(10))
+			result = p.map(comon_author_in_subreddits, cur.fetchmany(2))
 			for i in result:
 				heapq.heappush(queue, i)
 			#comon_author_in_subreddits(cur.fetchall())
