@@ -70,8 +70,8 @@ if __name__ == '__main__':
 
 	# Get all of the reddit ids
 	#cur.execute("SELECT id FROM subreddits WHERE id = ?",[Subreddit_id])
-	#cur.execute("SELECT id FROM subreddits LIMIT 20")
-	cur.execute("SELECT id FROM subreddits")
+	cur.execute("SELECT id FROM subreddits LIMIT 20")
+	#cur.execute("SELECT id FROM subreddits")
 
 	# Start a pool of threads
 	p = Pool(12)
@@ -79,10 +79,8 @@ if __name__ == '__main__':
 	results = p.map(find_avg_depth, cur.fetchall())
 	
 	p.close()
-	p.join()
 
-	#print results
-
+ 
 	top_ten = heapq.nlargest(10, results)
 
 	result_for_file = []
