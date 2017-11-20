@@ -71,7 +71,9 @@ if __name__ == '__main__':
 	print ("")
 
 	# Get all of the reddit ids
-	cur.execute("SELECT id FROM subreddits")
+	cur.execute("SELECT id FROM subreddits WHERE id = 't5_2rosc'")
+	#cur.execute("SELECT id FROM subreddits WHERE id = 't5_2zlk4'")
+	#cur.execute("SELECT id FROM subreddits WHERE id = 't5_2vjsb'")
 
 	# Start multiprocessing
 	p = Pool(100)
