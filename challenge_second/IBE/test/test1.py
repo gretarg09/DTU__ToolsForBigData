@@ -4,6 +4,9 @@ import cv2 # for this I needed to install opencv -> pip install opencv-python
 import numpy as np
 import json
 import time
+from sklearn.cluster import KMeans, AgglomerativeClustering
+
+data = []
 
 
 filenames = ["C:/Users/helga/Dropbox/Andri/ur1/1XQZDVLZ1LS1.mp4", "C:/Users/helga/Dropbox/Andri/ur1/5VQKMCWWPZW3.mp4", "C:/Users/helga/Dropbox/Andri/hond2/4IVIG8O5PNHB.mp4", "C:/Users/helga/Dropbox/Andri/hond2/Y97Z4868G3XV.mp4"]
@@ -78,4 +81,15 @@ for file in filenames:
 	            decimal_value = 0
 	    hash_string = hash_string +''.join(hex_string) + ' ' 
 	print hash_string
+	print [has for has in hash_string.split(" ")]
+	print [int(has,16) for has in hash_string.split()]
 	print int(hash_string.replace(" ", ""),16)
+	data.append([int(has,16) for has in hash_string.split()])
+
+kmeans = KMeans(n_clusters=2, random_state=0).fit(data)
+Aclust = AgglomerativeClustering(n_clusters=2).fit(data)
+
+print "K - means"
+print kmeans.labels_
+print "Aclust"
+print Aclust.labels_
