@@ -5,22 +5,23 @@ import json
 import time
 
 
-#filenames = [
-#        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4", 
-#        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/76KUS3QCGVCY.mp4", 
-#        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/96EC4QS20Z28.mp4", 
-#        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/CL8W7L333U90.mp4"]
+filenames = [
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4", 
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/76KUS3QCGVCY.mp4", 
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/96EC4QS20Z28.mp4", 
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/CL8W7L333U90.mp4",
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond2/4IVIG8O5PNHB.mp4"]
 
-filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4"]
+#filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4"]
 
-pxls = 10
+pxls = 8
 
 for file in filenames:
     cap = cv2.VideoCapture(file)
     sum_images = np.zeros((pxls,pxls + 1))
 
-    print("--------------------------------------")
-    print file
+    #print("--------------------------------------")
+    #print file
     
     while(True):
         # Capture frame-by-frame
@@ -52,15 +53,14 @@ for file in filenames:
     
     hash_string = ""
     for difference in img_compared:
-        print "each line:"
-        print difference 
+        #print "each line:"
+        #print difference 
         decimal_value = 0
         hex_string = []  
         for index, value in enumerate(difference):
-            print index
             if value: 
-                decimal_value += 2**(index % 8)
-            if (index % 8) == 7:
+                decimal_value += 2**(index % pxls)
+            if (index % pxls) == pxls-1:
                 hex_string.append(hex(decimal_value)[2:].rjust(2, '0'))
                 decimal_value  = 0
         hash_string = hash_string +''.join(hex_string) + ' '
