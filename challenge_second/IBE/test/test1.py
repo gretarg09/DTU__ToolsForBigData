@@ -6,7 +6,11 @@ import json
 import time
 
 
-filenames = ["C:/Users/helga/Dropbox/Andri/ur1/1XQZDVLZ1LS1.mp4", "C:/Users/helga/Dropbox/Andri/ur1/5VQKMCWWPZW3.mp4", "C:/Users/helga/Dropbox/Andri/hond2/4IVIG8O5PNHB.mp4", "C:/Users/helga/Dropbox/Andri/hond2/Y97Z4868G3XV.mp4"]
+filenames = [
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur1/1XQZDVLZ1LS1.mp4", 
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur1/5VQKMCWWPZW3.mp4", 
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4/", 
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/76KUS3QCGVCY.mp4/"]
 # cap = cv2.VideoCapture(filenames[0])
 # ret = True
 # while(ret):
