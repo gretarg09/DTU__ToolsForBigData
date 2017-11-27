@@ -5,19 +5,39 @@ import json
 import time
 
 
-filenames = [
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4", 
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/76KUS3QCGVCY.mp4", 
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/96EC4QS20Z28.mp4", 
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/CL8W7L333U90.mp4",
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond2/4IVIG8O5PNHB.mp4"]
+#filenames = [
+#        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4", 
+#        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/76KUS3QCGVCY.mp4", 
+#        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/96EC4QS20Z28.mp4", 
+#        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/CL8W7L333U90.mp4"]
 
 #filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4"]
+
+filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/LVK4R8FJA3N9.mp4"]
+
+#filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4",
+#             "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/76KUS3QCGVCY.mp4"]
+
+# ur 2
+#filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SKGL1C7462UE.mp4",
+#             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SM4TDHHC0FLL.mp4"] 
+
+# ur 3
+#filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/3FVFA1DVA3NZ.mp4",
+#             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/DD3C5S0MBKXB.mp4",
+#             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/LS2RXLT409EG.mp4",
+#             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/SPV675U9WWK7.mp4"]
+
 
 pxls = 8
 
 for file in filenames:
     cap = cv2.VideoCapture(file)
+    
+    length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    print( "Video frame length: {}".format(length) )
+    
+    
     sum_images = np.zeros((pxls,pxls + 1))
 
     #print("--------------------------------------")
@@ -28,9 +48,41 @@ for file in filenames:
         ret, frame = cap.read(1)
         
         if ret:
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            gray = cv2.resize(gray,(pxls + 1,pxls))
-            sum_images = gray + sum_images
+            # Start analysing the frames
+            
+            #### CROP IMAGE ####
+            
+            height = np.size(frame, 0)
+            width = np.size(frame, 1)
+            
+            if height > width: # if portrait image
+                x = 256
+                y = 454                
+            else: # else it is a landscape 
+                x = 454
+                y = 256
+        
+            
+            x_start = width/2 - x/2
+            x_end = width/2 + x/2
+            y_start = height/2 - y/2
+            y_end = height/2 + y/2
+
+            
+            crop_frame = frame[y_start:y_end, x_start:x_end]
+            
+            #------------------#
+            
+            print (height,width)
+            
+            cv2.imwrite('croppedframeur.png',crop_frame)
+            
+            #gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            #gray = cv2.resize(gray,(pxls + 1,pxls))
+            #sum_images = gray + sum_images
+
+            
+            break
             
         else:
             break
