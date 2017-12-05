@@ -49,7 +49,7 @@ for file in filenames:
     sum_images = np.zeros((pxls,pxls + 1))
 
     print("--------------------------------------")
-    print file
+    print "File name: {} ".format(file.split("/")[-1].split(".")[0])
     
     while(True):
         # Capture frame-by-frame
@@ -149,6 +149,32 @@ for file in filenames:
     
     #https://ekzhu.github.io/datasketch/lsh.html
     
+    
+    
+# Functions that finds number of different bits between two hash strings
+    
+def get_hamming_distance(hash_string1, hash_string2):
+    """Get the number of different bits between two hash strings."""
+    dist = 0
+    # get diff matrices from hash string
+    bits1 = hash_to_bits(hash_string1)
+    bits2 = hash_to_bits(hash_string2)
+
+    # compute distance
+    for bit1, bit2 in zip(bits1, bits2):
+        if bit1 != bit2:
+            dist += 1
+    return dist
+
+def hash_to_bits(hash_string):
+    """Convert a hash string into the corresponding bit string."""
+    bits = []
+    # Convert into individual hex numbers
+    hex_nums = ['0x' + hash_string[i:i+2] for i in range(0, len(hash_string), 2)]
+    for hex_num in hex_nums:
+        bit_string = bin(int(hex_num, 16))[2:].rjust(8, '0') # binary string
+        bits.append(bit_string)
+    return "".join(bits) # return as one string
     
     
     
