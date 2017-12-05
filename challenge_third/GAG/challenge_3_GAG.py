@@ -1,9 +1,11 @@
 from __future__ import division
+from itertools import combinations
 import cv2 # for this I needed to install opencv -> pip install opencv-python
 import numpy as np
 import json
 import time
 import math
+
 
 
 filenames = [
@@ -149,10 +151,35 @@ for file in filenames:
     
     #https://ekzhu.github.io/datasketch/lsh.html
     
+######################### FUNCTIONS TO CALCULATE THE DIFFERENCES ###################################3
     
     
-# Functions that finds number of different bits between two hash strings
-    
+# This function takes in a list of key value pairs (image key, hex value string) and 
+# Finds all combinations of the pairs and then calculated the number of different bits between two hash strings
+# It returns a sorted list, sorted in reverse order so the pairs with the highest difference are on the top of the list
+def find_hamming_distances(tuple_pair_array):
+    distances = []
+
+    # find all combinations
+    for i in combinations(tuple_pair_array, 2):
+        distance =  get_hamming_distance(i[0][1],i[1][1])
+        distances.append((i[0],i[1],distance))
+
+    distances = sorted(distances, key =  lambda x:x[2], reverse=True)
+
+    for distance_pair in distances:
+        output = "{}|{} - {}|{} - {}".format(
+            distance_pair[0][0],
+            distance_pair[1][0],
+            distance_pair[0][1],
+            distance_pair[1][1],
+            distance_pair[2]
+        )
+
+        print output
+
+
+# Functions that finds number of different bits between two hash strings  
 def get_hamming_distance(hash_string1, hash_string2):
     """Get the number of different bits between two hash strings."""
     dist = 0
@@ -175,10 +202,6 @@ def hash_to_bits(hash_string):
         bit_string = bin(int(hex_num, 16))[2:].rjust(8, '0') # binary string
         bits.append(bit_string)
     return "".join(bits) # return as one string
-    
-    
-    
-    
     
     
     
