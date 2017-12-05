@@ -41,6 +41,9 @@ filenames = [
 
 pxls = 8
 
+# Result is a key value pair (image id, resulting hash hex value)
+results = []
+
 for file in filenames:
     cap = cv2.VideoCapture(file)
     
@@ -51,7 +54,8 @@ for file in filenames:
     sum_images = np.zeros((pxls,pxls + 1))
 
     print("--------------------------------------")
-    print "File name: {} ".format(file.split("/")[-1].split(".")[0])
+    image_id = file.split("/")[-1].split(".")[0]
+    print "File name: {} ".format(image_id)
     
     while(True):
         # Capture frame-by-frame
@@ -146,10 +150,12 @@ for file in filenames:
     
     print hash_string
     #print int(hash_string.replace(" ", ""),16)
+    results.append((image_id,hash_string.replace(" ","")))
     
-    
-    
-    #https://ekzhu.github.io/datasketch/lsh.html
+######################### ANALYSE THE RESULT ###################################
+           
+print ("#################### RESULT ######################")
+find_hamming_distances(results)
     
 ######################### FUNCTIONS TO CALCULATE THE DIFFERENCES ###################################3
     
