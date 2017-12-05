@@ -11,6 +11,7 @@ from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
 data = []
 
 
+
 filenames = ["C:/Users/helga/Dropbox/Andri/ur1/1XQZDVLZ1LS1.mp4",
 			 # "C:/Users/helga/Dropbox/Andri/ur1/5VQKMCWWPZW3.mp4",
 			 # "C:/Users/helga/Dropbox/Andri/hond2/4IVIG8O5PNHB.mp4",
