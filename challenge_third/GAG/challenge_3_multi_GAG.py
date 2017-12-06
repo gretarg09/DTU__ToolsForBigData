@@ -12,7 +12,7 @@ from PIL import Image
 from collections import Counter
 from collections import defaultdict
 import os
-
+from multiprocessing import Process, Pool
 
 import sklearn.cluster as cluster
 #from sklearn import mixture
@@ -79,112 +79,82 @@ filenames3 = [ "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SKGL1C7462UE.mp4",
 video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/more_than_twenty"
 #video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/minor_videos"
 
+###################### Functions #########################################
 
-pxls = 8
-
-# Result is a key value pair (image id, resulting hash hex value)
-results = []
-
-t1 = time.time()
-
-for file in filenames2:
-#for file in os.listdir(video_folder_path):   
+def process_video(filepath):
     
-    #filepath = video_folder_path + "/" + file
+    # enable multithreading in OpenCV for child thread
+   # cv2.setNumThreads(-1)
     
-    filepath = file
+    print filepath
     
     cap = cv2.VideoCapture(filepath)
-        
-    sum_images = np.zeros((pxls,pxls))
-
-    print("--------------------------------------")
     
     length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    print( "Video frame length: {}".format(length) )
+    image_id = filepath.split("/")[-1].split(".")[0]
     
-    image_id = file.split("/")[-1].split(".")[0]
-    print "File name: {} ".format(image_id)
+    print length
     
     counter = -1
-    
     frames_lsh = []
-    
-    bedge_size = 250
+    window_size = 250
     
     while(True):
         # Capture frame-by-frame
         ret, frame = cap.read(1)
+        
+        print frame
         
         # increase counter
         counter = counter + 1
     
         if ret:
             
-            if counter > (length / 2) - (bedge_size/2) and counter < (length/2) + (bedge_size/2):
+            #if counter > (length / 2) - (window_size/2) and counter < (length/2) + (window_size/2):
                                 
-                # Start analysing the frames
-                
-                #### CROP IMAGE ####
-                # Here we crop the black frame from the images
-                # There are two different cases, either a portreit image of a landscape image3
-
-                height = np.size(frame, 0)
-                width = np.size(frame, 1)
-                
-                #print("height : {}".format(height))
-                #print("width : {}".format(width))
-                
-                
-                if height > width: # if portrait image
-                    x = 250
-                    y = 450                
-                else: # else it is a landscape 
-                    x = 450
-                    y = 250
+            # Start analysing the frames
             
-                x_start = int(width/2 - x/2)
-                x_end = int(width/2 + x/2)
-                y_start = int(height/2 - y/2)
-                y_end = int(height/2 + y/2)
-                
-                frame = frame[y_start:y_end, x_start:x_end]
-                gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                
-                #### Histogram normalization ####
-                
-                #clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-               # gray = clahe.apply(gray)
-                gray = cv2.equalizeHist(gray)
-                
-                ##################################
-                
-                #gray = cv2.resize(gray,(pxls,pxls))
-                
-                
-                # average hashing (aHash)
-                # perception hashing (pHash)
-                # difference hashing (dHash)
-                # wavelet hashing (wHash)
-                    
-                #frames_lsh.append(str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8)))
-                
-                image_hash = str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8))
-                
-                frames_lsh.append(image_hash)
+            #### CROP IMAGE ####
+            # Here we crop the black frame from the images
+            # There are two different cases, either a portreit image of a landscape image
+
+            height = np.size(frame, 0)
+            width = np.size(frame, 1)
+            
+            if height > width: # if portrait image
+                x = 250
+                y = 450                
+            else: # else it is a landscape 
+                x = 450
+                y = 250
+        
+            x_start = int(width/2 - x/2)
+            x_end = int(width/2 + x/2)
+            y_start = int(height/2 - y/2)
+            y_end = int(height/2 + y/2)
+            
+            frame = frame[y_start:y_end, x_start:x_end]
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            
+            #### Histogram normalization ####
+            
+            #clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+           # gray = clahe.apply(gray)
+            gray = cv2.equalizeHist(gray)
+            
+            image_hash = str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8))                
+            frames_lsh.append(image_hash)
         
         else:
             break
        
     
+    print frames_lsh
+    
     # When video has been processed then release the capture
     cap.release()
-    cv2.destroyAllWindows()
-    
-    
-    # ------------------------ TESTING -------------------------------
-    
-    print (frames_lsh)
+    #cv2.destroyAllWindows()
+
 
     # ------------------ FEATURE HASHING -----------------------------
     # initialize the feature hashing matrix
@@ -198,50 +168,76 @@ for file in filenames2:
         feature_hash_vector[h % N] += 1
 
     
-    results.append((image_id,feature_hash_vector))
+    return (image_id,feature_hash_vector)
+
+
+def dummy_func(filepath):
+    print filepath
     
-t2 = time.time()
 
-print("Execution time - First part : {}".format(t2-t1))   
+
+if __name__ == "__main__":
+    t1 = time.time()
     
-######################### ANALYSE THE RESULT ###################################
-           
-print ("\n#################### SIMILARITY ######################")
-       
-
-#func.find_hamming_distances(results)
-#func.find_cosine_similarity(results)
-
-######################### CALCULATE RAND INDEX ###################################
-
-       
-print ("\n#################### TESTING RESULT ######################")       
-       
-test_result = False      
+    #for file in filenames0:
+    #filepaths = [video_folder_path + "/" + file for file in os.listdir(video_folder_path)]  
       
-if test_result:        
-       
-    # make data ready for clustering algorithms
+     # disable multithreading in OpenCV for main thread to avoid problems after fork
+    #cv2.setNumThreads(0)
+    
+    # start multiprocessing
+    p = Pool(1)
+    results = p.map(process_video, filenames2, chunksize=1)
 
-    data = []  
-    video_names = []
-    for img, res in results:
-        data.append(res)
-        video_names.append(img)
+#print results
+    
+    
+# ------------------------ TESTING -------------------------------
+    
 
-    print ("before calculating the clustering")
-    
-    agglomerative = cluster.AgglomerativeClustering(n_clusters= 21 , linkage="ward").fit(data)
-    video_and_label = zip(agglomerative.labels_, video_names)
-    
-    clusters = defaultdict(set)
-    
-    for label, video in video_and_label:
-        clusters[label].add(video)
-        
-    rand_index_result = func.rand_index(clusters.values())
-    
-    print(rand_index_result)
+
+#t2 = time.time()
+#
+#print("Execution time - First part : {}".format(t2-t1))   
+#    
+########################## ANALYSE THE RESULT ###################################
+#           
+#print ("\n#################### SIMILARITY ######################")
+#       
+#
+##func.find_hamming_distances(results)
+##func.find_cosine_similarity(results)
+#
+########################## CALCULATE RAND INDEX ###################################
+#
+#       
+#print ("\n#################### TESTING RESULT ######################")       
+#       
+#test_result = True       
+#      
+#if test_result:        
+#       
+#    # make data ready for clustering algorithms
+#
+#    data = []  
+#    video_names = []
+#    for img, res in results:
+#        data.append(res)
+#        video_names.append(img)
+#
+#    print ("before calculating the clustering")
+#    
+#    agglomerative = cluster.AgglomerativeClustering(n_clusters= 21 , linkage="ward").fit(data)
+#    video_and_label = zip(agglomerative.labels_, video_names)
+#    
+#    clusters = defaultdict(set)
+#    
+#    for label, video in video_and_label:
+#        clusters[label].add(video)
+#        
+#    rand_index_result = func.rand_index(clusters.values())
+#    
+#    print(rand_index_result)
     
     #for name, clusters in clusters_and_names:
     #    print name
