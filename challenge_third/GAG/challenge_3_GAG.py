@@ -9,6 +9,8 @@ import json
 import time
 import math
 from PIL import Image
+from collections import Counter
+
 
 
 
@@ -25,6 +27,21 @@ filenames = [
         "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/NTETO8P77N96.mp4",
         "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/SLK2PRXGW3DZ.mp4",
         "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/LVK4R8FJA3N9.mp4"]
+
+filenames0 = [
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/6CY15JHMFHQ4.mp4", 
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/6NWTR5CP41WG.mp4", 
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/9H0UQ6RGPK51.mp4", 
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/9Y6TIK3P5MDO.mp4",
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/LVK4R8FJA3N9.mp4",
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/MF34IWZEV0H1.mp4",
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/PZGZKNTRVEUH.mp4",
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/QB9RBNGHAR91.mp4",
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SKGL1C7462UE.mp4",
+        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SM4TDHHC0FLL.mp4"
+        #"/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/3FVFA1DVA3NZ.mp4"
+        ]
+
 
 filenames1 = ["/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4",
              "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/96EC4QS20Z28.mp4"] 
@@ -48,12 +65,22 @@ filenames3 = [ "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SKGL1C7462UE.mp4",
 #             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/SPV675U9WWK7.mp4"]
 
 
+
+def hashing_vectorizer(feature, N):
+    x = np.zeros(N)
+    h = hash(feature)
+    x[h % N] += 1
+    
+    return x
+
+
+
 pxls = 8
 
 # Result is a key value pair (image id, resulting hash hex value)
 results = []
 
-for file in filenames3:
+for file in filenames2:
     cap = cv2.VideoCapture(file)
         
     sum_images = np.zeros((pxls,pxls))
@@ -79,7 +106,7 @@ for file in filenames3:
         
         if ret:
             
-            if counter % 1 == 0:
+            if counter % 10 == 0:
                                 
                 # Start analysing the frames
                 
@@ -122,79 +149,74 @@ for file in filenames3:
                 
                 #### Histogram normalization ####
                 
-                clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-                gray = clahe.apply(gray)
-                #gray = cv2.equalizeHist(gray)
-                
-                #cv2.imwrite('second.png',gray)
+                #clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+               # gray = clahe.apply(gray)
+                gray = cv2.equalizeHist(gray)
                 
                 ##################################
                 
-                            
-                gray = cv2.resize(gray,(pxls,pxls))
+                #gray = cv2.resize(gray,(pxls,pxls))
                 
                 
-                frames_lsh.append(str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8)))
-            
-            #break 
-        
-        
-            #sum_images = gray + sum_images
+                # average hashing (aHash)
+                # perception hashing (pHash)
+                # difference hashing (dHash)
+                # wavelet hashing (wHash)
+                    
+                #frames_lsh.append(str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8)))
+                
+                image_hash = str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8))
+                
+                #image_hash = str(imagehash.( Image.fromarray(frame), hash_size = 8))
+                
+                frames_lsh.append(image_hash)
         
         else:
             break
         
         
         
+    #sec   
+    #print ("len : {}".format(len (frames_lsh) ))
+    #for i in frames_lsh:
+     #   print(i)
+        
+    #frames_lsh_counted = Counter(frames_lsh)
+    
+     
+    #for key,value in sorted(frames_lsh_counted.items(), key = lambda x:x[1], reverse = True):
+    #    print(key, value)
+            
+        
+    
+    
+    #print ("############## Set #################")
+    #print ("len : {}".format(len (set(frames_lsh)) ))
+    #for i in set(frames_lsh) :
+    #    print(i)
+        
+    #frames_lsh = list(set(frames_lsh))
+           
     # When everything done, release the capture
     cap.release()
     cv2.destroyAllWindows()
     
-    #for hash_String in local_sensitive_hashs:
-    #    print hash_String 
-    
-    ################# Hashing #####################
-    
 
-    def hashing_vectorizer(feature, N):
-        x = np.zeros(N)
-        h = hash(feature)
-        x[h % N] += 1
-        
-        return x
-
-    
+    #------------------ FEATURE HASHING -----------------------------
     # initialize the feature hashing matrix
-    N = 1000 # number of buckets
+    N = 8 # number of buckets
     feature_hashing_matrix = np.zeros((len(frames_lsh), N))
     
     # create the feature hashing matrix
     for i,_ in enumerate(feature_hashing_matrix):
         feature_hashing_matrix[i] = hashing_vectorizer(frames_lsh[i],N)
 
-    
-    #print (feature_hashing_matrix)
+
+    print feature_hashing_matrix
+    print result_vector
+
     result_vector = feature_hashing_matrix.sum(axis=0)
-    print (result_vector)
-
-    
-    
-    #break
-    #hash_string = func.difference_hash(sum_images,pxls)
-    
-    #print(sum_images)
-    
-    #sum_images = (sum_images/length).round()
-
-    #print(sum_images)
-
-    #hash_string = str( imagehash.average_hash(Image.fromarray(sum_images), hash_size = 8) )
-    
-
-    
-
     results.append((image_id,result_vector))
-    #print (sum_images)
     
     
     
