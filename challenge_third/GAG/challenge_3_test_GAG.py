@@ -12,6 +12,7 @@ from PIL import Image
 from collections import Counter
 from collections import defaultdict
 import os
+import imageio
 
 
 import sklearn.cluster as cluster
@@ -85,119 +86,90 @@ results = []
 
 t1 = time.time()
 
-for file in filenames2:
-#for file in os.listdir(video_folder_path):   
-    
-    #filepath = video_folder_path + "/" + file
-    
-    filepath = file
-    
-    cap = cv2.VideoCapture(filepath)
+for file in filenames:
+    #for file in os.listdir(video_folder_path):
         
-    sum_images = np.zeros((pxls,pxls))
-
-    print("--------------------------------------")
+    filepath = file
+    reader = imageio.get_reader(filepath)
     
-    length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    print( "Video frame length: {}".format(length) )
-    
+    # Set variables
+    length = len(reader)
+    bedge_size = 250
+    frames_lsh = []
     image_id = file.split("/")[-1].split(".")[0]
+    
+    
+    print("--------------------------------------")
+    print( "Video frame length: {}".format(length) )
     print "File name: {} ".format(image_id)
     
-    counter = -1
     
-    frames_lsh = []
-    
-    bedge_size = 250
-    
-    while(True):
-        # Capture frame-by-frame
-        ret, frame = cap.read(1)
+    for counter, frame in enumerate(reader):
         
-        # increase counter
-        counter = counter + 1
-    
-        if ret:
+        if counter > (length / 2) - (bedge_size/2) and counter < (length/2) + (bedge_size/2):
+                                    
+            # Start analysing the frames
             
-            if counter > (length / 2) - (bedge_size/2) and counter < (length/2) + (bedge_size/2):
-                                
-                # Start analysing the frames
-                
-                #### CROP IMAGE ####
-                # Here we crop the black frame from the images
-                # There are two different cases, either a portreit image of a landscape image3
-
-                height = np.size(frame, 0)
-                width = np.size(frame, 1)
-                
-                #print("height : {}".format(height))
-                #print("width : {}".format(width))
-                
-                
-                if height > width: # if portrait image
-                    x = 250
-                    y = 450                
-                else: # else it is a landscape 
-                    x = 450
-                    y = 250
+            #### CROP IMAGE ####
+            # Here we crop the black frame from the images
+            # There are two different cases, either a portreit image of a landscape image3
             
-                x_start = int(width/2 - x/2)
-                x_end = int(width/2 + x/2)
-                y_start = int(height/2 - y/2)
-                y_end = int(height/2 + y/2)
-                
-                frame = frame[y_start:y_end, x_start:x_end]
-                gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                
-                #### Histogram normalization ####
-                
-                #clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-               # gray = clahe.apply(gray)
-                gray = cv2.equalizeHist(gray)
-                
-                ##################################
-                
-                #gray = cv2.resize(gray,(pxls,pxls))
-                
-                
-                # average hashing (aHash)
-                # perception hashing (pHash)
-                # difference hashing (dHash)
-                # wavelet hashing (wHash)
+            height = np.size(frame, 0)
+            width = np.size(frame, 1)
+            
+           # print("height : {}".format(height))
+           # print("width : {}".format(width))
+            
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
+        
+        
+            if height > width: # if portrait image
+                x = 250
+                y = 450                
+            else: # else it is a landscape 
+                x = 450
+                y = 250
+            
+            x_start = int(width/2 - x/2)
+            x_end = int(width/2 + x/2)
+            y_start = int(height/2 - y/2)
+            y_end = int(height/2 + y/2)
+            
+            gray = gray[y_start:y_end, x_start:x_end]
+            
+        
+        
+            #### Histogram normalization ####
+            
+            #clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+            # gray = clahe.apply(gray)
+            gray = cv2.equalizeHist(gray)
+            
+            ##################################
+            
+            #gray = cv2.resize(gray,(pxls,pxls))
                     
-                #frames_lsh.append(str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8)))
-                
-                image_hash = str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8))
-                
-                frames_lsh.append(image_hash)
+            image_hash = str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8))        
+            frames_lsh.append(image_hash)
         
-        else:
-            break
-       
+        
+    print(frames_lsh)
+        
     
-    # When video has been processed then release the capture
-    cap.release()
-    cv2.destroyAllWindows()
-    
-    
-    # ------------------------ TESTING -------------------------------
-    
-    print (frames_lsh)
-
     # ------------------ FEATURE HASHING -----------------------------
     # initialize the feature hashing matrix
     N = 1000 # number of buckets
     
     
     feature_hash_vector = np.zeros(N)
-
+    
     for hash_str in frames_lsh:
         h = hash(hash_str)
         feature_hash_vector[h % N] += 1
-
+    
     
     results.append((image_id,feature_hash_vector))
-    
+
 t2 = time.time()
 
 print("Execution time - First part : {}".format(t2-t1))   
@@ -208,7 +180,7 @@ print ("\n#################### SIMILARITY ######################")
        
 
 #func.find_hamming_distances(results)
-#func.find_cosine_similarity(results)
+func.find_cosine_similarity(results)
 
 ######################### CALCULATE RAND INDEX ###################################
 
@@ -250,6 +222,27 @@ if test_result:
     #    print "rand index: {}".format(rand_index(clusters))
     #    print
 
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
