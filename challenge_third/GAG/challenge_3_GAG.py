@@ -80,8 +80,6 @@ video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/more_than_twenty"
 #video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/minor_videos"
 
 
-pxls = 8
-
 # Result is a key value pair (image id, resulting hash hex value)
 results = []
 
