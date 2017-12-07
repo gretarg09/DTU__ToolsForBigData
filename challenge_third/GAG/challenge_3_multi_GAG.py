@@ -3,6 +3,7 @@ from __future__ import division
 import cv2 # for this I needed to install opencv -> pip install opencv-python
 import numpy as np
 import challenge_3_func_GAG as func
+import adjusted_rand_index as rand_index_validation
 from multiprocessing import Process, Pool 
 import imagehash
 import json
@@ -25,69 +26,10 @@ from sklearn.preprocessing import StandardScaler
 from itertools import cycle, islice
 
 
-#from sklearn import mixture
-#from sklearn.cluster import KMeans
-#from sklearn import cluster, datasets, mixture
-#from sklearn.neighbors import kneighbors_graph
-#from sklearn.preprocessing import StandardScaler
-
-
-
-
-
-filenames = [
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4", 
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/76KUS3QCGVCY.mp4", 
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/96EC4QS20Z28.mp4", 
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/CL8W7L333U90.mp4",
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/FDAZ5NL5NFL2.mp4",
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/HBX8QLI9HH25.mp4",
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/JY2ZAINWD2RX.mp4",
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/LP47ZGJ256YU.mp4",
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/NTETO8P77N96.mp4",
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/SLK2PRXGW3DZ.mp4",
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/LVK4R8FJA3N9.mp4"]
-
-filenames0 = [
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/6CY15JHMFHQ4.mp4", 
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/6NWTR5CP41WG.mp4", 
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/9H0UQ6RGPK51.mp4", 
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/9Y6TIK3P5MDO.mp4",
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/LVK4R8FJA3N9.mp4",
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/MF34IWZEV0H1.mp4",
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/PZGZKNTRVEUH.mp4",
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/QB9RBNGHAR91.mp4",
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SKGL1C7462UE.mp4",
-        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SM4TDHHC0FLL.mp4"
-        #"/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/3FVFA1DVA3NZ.mp4"
-        ]
-
-
-filenames1 = ["/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4",
-             "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/96EC4QS20Z28.mp4"] 
-
-filenames2 = ["/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/LVK4R8FJA3N9.mp4"]
-
-filenames3 = [ "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SKGL1C7462UE.mp4",
-              "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SM4TDHHC0FLL.mp4"]
-
-#filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4",
-#             "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/76KUS3QCGVCY.mp4"]
-
-# ur 2
-#filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SKGL1C7462UE.mp4",
-#             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SM4TDHHC0FLL.mp4"] 
-
-# ur 3
-#filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/3FVFA1DVA3NZ.mp4",
-#             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/DD3C5S0MBKXB.mp4",
-#             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/LS2RXLT409EG.mp4",
-#             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/SPV675U9WWK7.mp4"]
-
 
 video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/videos"
 #video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/more_than_twenty"
-#video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/minor_videos"
+
 
 
 ###################### FUNCTIONS ###############################
@@ -96,8 +38,10 @@ def process_video (filepath):
     
     # Set variables
     length = len(reader)
-    bedge_size = 250
+    bedge_size = 350
     frames_lsh = []
+    
+    # Get image id
     image_id = filepath.split("/")[-1].split(".")[0]
     
     
@@ -114,7 +58,7 @@ def process_video (filepath):
             
             frame = np.array(frame)
             
-            #### CROP IMAGE ####
+            #------------------------- CROP IMAGE ----------------------------------#
             # Here we crop the black frame from the images
             # There are two different cases, either a portreit image of a landscape image3
             
@@ -143,17 +87,17 @@ def process_video (filepath):
             
         
         
-            #### Histogram normalization ####
+            #------------------ Histogram normalization ------------------------------#
             
             #clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
             # gray = clahe.apply(gray)
             gray = cv2.equalizeHist(gray)
             
-            ##################################
+            #---------------------- LOCALITY SENSITIVE HASHING ----------------------------------#
             
             #gray = cv2.resize(gray,(pxls,pxls))
                     
-            image_hash = str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8))        
+            image_hash = str(imagehash.average_hash( Image.fromarray(gray), hash_size = 4))        
             frames_lsh.append(image_hash)
         
         
@@ -162,7 +106,7 @@ def process_video (filepath):
     
     # ------------------ FEATURE HASHING -----------------------------
     # initialize the feature hashing matrix
-    N = 1000 # number of buckets
+    N = 600 # number of buckets
     
     
     feature_hash_vector = np.zeros(N)
@@ -184,6 +128,7 @@ t1 = time.time()
 #for file in filenames: 
 filepaths =  [video_folder_path + "/" + file  for file in os.listdir(video_folder_path)]
     
+#
 p = Pool(8)
 results = p.map(process_video,filepaths,chunksize=1)
 p.close()
@@ -223,82 +168,87 @@ if test_result:
 
     print ("before calculating the clustering")
     
-    
-    print ("-------------------- Agglomeration ------------------------")
-    
-    
-    agglomerative = cluster.AgglomerativeClustering(n_clusters= n_clusters, linkage="ward").fit(data)
-    video_and_label_agglomerative = zip(agglomerative.labels_, video_names)
-    
-    clusters = defaultdict(set)
-    
-    for label, video in video_and_label_agglomerative:
-        clusters[label].add(video)
         
-    rand_index_result = func.rand_index(clusters.values())
+    run_agglomerative = False
+    if run_agglomerative:
+        
+        print ("-------------------- Agglomeration ------------------------")
     
-    print(rand_index_result)
+        agglomerative = cluster.AgglomerativeClustering(n_clusters= n_clusters, linkage="ward").fit(data)
+        video_and_label_agglomerative = zip(agglomerative.labels_, video_names)
+        
+        clusters = defaultdict(set)
+        
+        for label, video in video_and_label_agglomerative:
+            clusters[label].add(video)
+            
+        rand_index_result = rand_index_validation.rand_index(clusters.values())
+        
+        print(rand_index_result)
     
-    
-    print ("--------------------- SPECTRAL ------------------------")
-    
-    
-    spectral = cluster.SpectralClustering(
-                                n_clusters=n_clusters, eigen_solver='arpack',
-                                affinity="nearest_neighbors").fit(data)
 
-    
-    video_and_label_spectral = zip(spectral.labels_, video_names)
-    
-    clusters = defaultdict(set)
-    
-    for label, video in video_and_label_spectral:
-        clusters[label].add(video)
+    run_spectral = True
+    if run_spectral:    
+        print ("--------------------- SPECTRAL ------------------------")
         
-    rand_index_result = func.rand_index(clusters.values())
+        spectral = cluster.SpectralClustering(
+                                    n_clusters=n_clusters, n_init = 20, eigen_solver='arpack',
+                                    affinity="nearest_neighbors", assign_labels = 'discretize').fit(data)
     
-    print(rand_index_result)
-    
-    
-    print ("-------------------- WARD --------------------")
-           
-    # connectivity matrix for structured Ward
-    connectivity = kneighbors_graph(
-                                data, n_neighbors=n_clusters, include_self=False)
-    # make connectivity symmetric
-    connectivity = 0.5 * (connectivity + connectivity.T)
-
-
-    ward = cluster.AgglomerativeClustering(
-                                        n_clusters=n_clusters, linkage='ward',
-                                        connectivity=connectivity).fit(data)
-    
-    video_and_label_ward = zip(ward.labels_, video_names)
-    
-    clusters = defaultdict(set)
-    
-    for label, video in video_and_label_ward:
-        clusters[label].add(video)
         
-    rand_index_result = func.rand_index(clusters.values())
-    
-    print(rand_index_result)
-    
-    
-    print ("----------------- BIRCH --------------------")
-    
-    birch = cluster.Birch(n_clusters=n_clusters).fit(data)
-    
-    video_and_label_birch = zip(birch.labels_, video_names)
-    
-    clusters = defaultdict(set)
-    
-    for label, video in video_and_label_birch:
-        clusters[label].add(video)
+        video_and_label_spectral = zip(spectral.labels_, video_names)
         
-    rand_index_result = func.rand_index(clusters.values())
+        clusters = defaultdict(set)
+        
+        for label, video in video_and_label_spectral:
+            clusters[label].add(video)
+            
+        rand_index_result = rand_index_validation.rand_index(clusters.values())
+        
+        print(rand_index_result)
     
-    print(rand_index_result)
+    
+    
+    run_ward = False
+    if run_ward:
+        print ("-------------------- WARD --------------------")
+       
+        # connectivity matrix for structured Ward
+        connectivity = kneighbors_graph(data, n_neighbors=n_clusters, include_self=False)
+        # make connectivity symmetric
+        connectivity = 0.5 * (connectivity + connectivity.T)
+    
+    
+        ward = cluster.AgglomerativeClustering(
+                                            n_clusters=n_clusters, linkage='ward',
+                                            connectivity=connectivity).fit(data)
+        
+        video_and_label_ward = zip(ward.labels_, video_names)
+        
+        clusters = defaultdict(set)
+        
+        for label, video in video_and_label_ward:
+            clusters[label].add(video)
+            
+        rand_index_result = rand_index_validation.rand_index(clusters.values())
+    
+        print(rand_index_result)
+    
+    run_brich = False
+    if run_brich:
+        print ("----------------- BIRCH --------------------")
+    
+        birch = cluster.Birch(n_clusters=n_clusters).fit(data)
+        video_and_label_birch = zip(birch.labels_, video_names)
+        
+        clusters = defaultdict(set)
+        
+        for label, video in video_and_label_birch:
+            clusters[label].add(video)
+            
+        rand_index_result = rand_index_validation.rand_index(clusters.values())
+        
+        print(rand_index_result)
     
     
     #for name, clusters in clusters_and_names:
@@ -312,7 +262,7 @@ if test_result:
 
 t3 = time.time()
 
-print("Execution time : {}".format(t3-t2))
+print("Execution time : {}".format(t3-t1))
     
     
     
