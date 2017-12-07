@@ -1,7 +1,13 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Dec 06 16:23:23 2017
+
+@author: helga
+"""
 from __future__ import division
 from itertools import combinations
 from sklearn.feature_extraction import FeatureHasher
-import cv2 # for this I needed to install opencv -> pip install opencv-python
+import cv2  # for this I needed to install opencv -> pip install opencv-python
 import numpy as np
 import challenge_3_func_GAG as func
 import imagehash
@@ -17,12 +23,10 @@ from sklearn.preprocessing import StandardScaler
 from os import listdir
 from os.path import isfile, join
 
-
-
-#filenames = [
-#        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4", 
-#        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/76KUS3QCGVCY.mp4", 
-#        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/96EC4QS20Z28.mp4", 
+# filenames = [
+#        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4",
+#        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/76KUS3QCGVCY.mp4",
+#        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/96EC4QS20Z28.mp4",
 #        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/CL8W7L333U90.mp4",
 #        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/FDAZ5NL5NFL2.mp4",
 #        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/HBX8QLI9HH25.mp4",
@@ -32,26 +36,67 @@ from os.path import isfile, join
 #        "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/SLK2PRXGW3DZ.mp4",
 #        "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/LVK4R8FJA3N9.mp4"]
 #
-#filenames1 = ["/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4",
-#             "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/96EC4QS20Z28.mp4"] 
+# filenames1 = ["/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4",
+#             "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/96EC4QS20Z28.mp4"]
 #
-#filenames2 = ["/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/LVK4R8FJA3N9.mp4"]
+# filenames2 = ["/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/LVK4R8FJA3N9.mp4"]
 #
-#filenames3 = [ "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SKGL1C7462UE.mp4",
+# filenames3 = [ "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SKGL1C7462UE.mp4",
 #              "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SM4TDHHC0FLL.mp4"]
 
-#filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4",
+# filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/0WS86GPURFK5.mp4",
 #             "/Users/GretarAtli/Dropbox/ToolsForBigData/hond1/76KUS3QCGVCY.mp4"]
 
 # ur 2
-#filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SKGL1C7462UE.mp4",
-#             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SM4TDHHC0FLL.mp4"] 
+# filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SKGL1C7462UE.mp4",
+#             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SM4TDHHC0FLL.mp4"]
 
 # ur 3
-#filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/3FVFA1DVA3NZ.mp4",
+# filenames = ["/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/3FVFA1DVA3NZ.mp4",
 #             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/DD3C5S0MBKXB.mp4",
 #             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/LS2RXLT409EG.mp4",
 #             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/SPV675U9WWK7.mp4"]
+
+
+
+def imageMaker(frame):
+
+    height = np.size(frame, 0)
+    width = np.size(frame, 1)
+    
+    #print("height : {}".format(height))
+    #print("width : {}".format(width))
+    
+    
+    if height > width: # if portrait image
+        x = 256
+        y = 454                
+    else: # else it is a landscape 
+        x = 454
+        y = 256
+
+    x_start = int(width/2 - x/2)
+    x_end = int(width/2 + x/2)
+    y_start = int(height/2 - y/2)
+    y_end = int(height/2 + y/2)
+            
+    frame = frame[y_start:y_end, x_start:x_end]
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    
+    #### Histogram normalization ####
+    
+#                clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+#                gray = clahe.apply(gray)
+    return cv2.equalizeHist(gray)
+    
+    #cv2.imwrite('second.png',gray)
+    
+    ##################################
+    
+                
+    #gray = cv2.resize(gray,(pxls,pxls))
+                
+    
 
 filenames3 = [ "C:/Users/helga/Dropbox/Andri/ur2/SKGL1C7462UE.mp4",
               "C:/Users/helga/Dropbox/Andri/ur2/SM4TDHHC0FLL.mp4"]
@@ -83,13 +128,13 @@ for file in filenames:
         
     sum_images = np.zeros((pxls,pxls))
 
-    print("--------------------------------------")
+    #print("--------------------------------------")
     
     length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    print( "Video frame length: {}".format(length) )
+    #print( "Video frame length: {}".format(length) )
     
     image_id = file.split("/")[-1].split(".")[0]
-    print "File name: {} ".format(image_id)
+    #print "File name: {} ".format(image_id)
     
     counter = -1
     frames_lsh = []
@@ -101,7 +146,7 @@ for file in filenames:
 #    print
 #    print "LENGTHHHH " + str(len(tester))
 #    print
-
+    divider = 15
     while(True):
         # Capture frame-by-frame
         ret, frame = cap.read(1)
@@ -111,71 +156,25 @@ for file in filenames:
         
         if ret:
         
-            if counter % 1 == 0 and counter > length/2 -800 and counter < length/2 + 800:
+            if counter < length/divider:
+                if counter % 5 != 0:
                 
-                # Start analysing the frames
-                
-                #### CROP IMAGE ####
-                # Here we crop the black frame from the images
-                # There are two different cases, either a portreit image of a landscape image
-                
-                crop = True
-                
-                if crop:
-                    height = np.size(frame, 0)
-                    width = np.size(frame, 1)
-                    
-                    #print("height : {}".format(height))
-                    #print("width : {}".format(width))
-                    
-                    
-                    if height > width: # if portrait image
-                        x = 256
-                        y = 454                
-                    else: # else it is a landscape 
-                        x = 454
-                        y = 256
-                
-                    x_start = int(width/2 - x/2)
-                    x_end = int(width/2 + x/2)
-                    y_start = int(height/2 - y/2)
-                    y_end = int(height/2 + y/2)
-                    
-                    #print("x start : {}".format(x_start))
-                    #print("x end : {}".format(x_end))
-                    #print("y start : {}".format(y_start))
-                    #print("y end : {}".format(y_end))
-        
-                    
-                    frame = frame[y_start:y_end, x_start:x_end]
-                
-                
-                gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                
-                #### Histogram normalization ####
-                
-#                clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-#                gray = clahe.apply(gray)
-                gray = cv2.equalizeHist(gray)
-                
-                #cv2.imwrite('second.png',gray)
-                
-                ##################################
-                
-                            
-                #gray = cv2.resize(gray,(pxls,pxls))
-                
-                
-                frames_lsh.append(str(imagehash.average_hash( Image.fromarray(gray), hash_size = 10)))
+                   gray = imageMaker(frame)
+                   frames_lsh.append(str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8)))
             
-            #break 
-        
-        
-            #sum_images = gray + sum_images
+            elif counter > length/divider and counter < (length/2 + length/divider):
+               if counter % 1 == 0:
+                   gray = imageMaker(frame)
+                   frames_lsh.append(str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8)))
+            else:
+               if counter % 5 != 0:
+                   gray = imageMaker(frame)
+                   frames_lsh.append(str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8)))
         
         else:
             break
         
+    
         
         
     # When everything done, release the capture
@@ -197,7 +196,7 @@ for file in filenames:
 
     
     # initialize the feature hashing matrix
-    N = 1000 # number of buckets
+    N = 120 # number of buckets
     feature_hashing_matrix = np.zeros((len(frames_lsh), N))
     
     # create the feature hashing matrix
@@ -237,7 +236,7 @@ for img, res in results:
            
 print ("\n#################### RESULT ######################")
 #func.find_hamming_distances(results)
-func.find_cosine_similarity(results)
+#func.find_cosine_similarity(results)
 
 num_clusters = 21
 params = {'damping': .77,
@@ -292,7 +291,7 @@ gmm = mixture.GaussianMixture(
 
 
 # Clustering algorithms
-#kmeans = cluster.KMeans(n_clusters=num_clusters, random_state=0).fit(X)    
+kmeans = cluster.KMeans(n_clusters=num_clusters, random_state=0).fit(X)    
 agglomerative = cluster.AgglomerativeClustering(n_clusters=num_clusters, linkage="ward").fit(X)
    
 data = results
