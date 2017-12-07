@@ -86,11 +86,12 @@ results = []
 
 t1 = time.time()
 
-for file in filenames:
-    #for file in os.listdir(video_folder_path):
+#for file in filenames:
+for file in os.listdir(video_folder_path):
+    
+    filepath = video_folder_path + "/" + file
         
-    filepath = file
-    reader = imageio.get_reader(filepath)
+    reader = imageio.get_reader(filepath,)
     
     # Set variables
     length = len(reader)
@@ -105,57 +106,62 @@ for file in filenames:
     
     
     for counter, frame in enumerate(reader):
-        
         if counter > (length / 2) - (bedge_size/2) and counter < (length/2) + (bedge_size/2):
-                                    
+
+            frame = np.array(frame)
             # Start analysing the frames
             
             #### CROP IMAGE ####
             # Here we crop the black frame from the images
             # There are two different cases, either a portreit image of a landscape image3
-            
+
             height = np.size(frame, 0)
             width = np.size(frame, 1)
             
-           # print("height : {}".format(height))
-           # print("width : {}".format(width))
+            #print("height : {}".format(height))
+            #print("width : {}".format(width))
             
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
-        
-        
+            
             if height > width: # if portrait image
                 x = 250
                 y = 450                
             else: # else it is a landscape 
                 x = 450
                 y = 250
-            
+        
             x_start = int(width/2 - x/2)
             x_end = int(width/2 + x/2)
             y_start = int(height/2 - y/2)
             y_end = int(height/2 + y/2)
             
-            gray = gray[y_start:y_end, x_start:x_end]
+            frame = frame[y_start:y_end, x_start:x_end]
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             
-        
-        
             #### Histogram normalization ####
             
             #clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-            # gray = clahe.apply(gray)
+           # gray = clahe.apply(gray)
             gray = cv2.equalizeHist(gray)
             
             ##################################
             
             #gray = cv2.resize(gray,(pxls,pxls))
-                    
-            image_hash = str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8))        
+            
+            
+            # average hashing (aHash)
+            # perception hashing (pHash)
+            # difference hashing (dHash)
+            # wavelet hashing (wHash)
+                
+            #frames_lsh.append(str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8)))
+            
+            image_hash = str(imagehash.average_hash( Image.fromarray(gray), hash_size = 8))
+            
             frames_lsh.append(image_hash)
         
         
-    print(frames_lsh)
-        
-    
+    #print(frames_lsh)
+
     # ------------------ FEATURE HASHING -----------------------------
     # initialize the feature hashing matrix
     N = 1000 # number of buckets
@@ -180,14 +186,14 @@ print ("\n#################### SIMILARITY ######################")
        
 
 #func.find_hamming_distances(results)
-func.find_cosine_similarity(results)
+#func.find_cosine_similarity(results)
 
 ######################### CALCULATE RAND INDEX ###################################
 
        
 print ("\n#################### TESTING RESULT ######################")       
        
-test_result = False      
+test_result = True      
       
 if test_result:        
        

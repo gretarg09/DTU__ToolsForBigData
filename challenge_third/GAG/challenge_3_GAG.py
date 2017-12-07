@@ -85,12 +85,12 @@ results = []
 
 t1 = time.time()
 
-for file in filenames2:
-#for file in os.listdir(video_folder_path):   
+#for file in filenames2:
+for file in os.listdir(video_folder_path):   
     
-    #filepath = video_folder_path + "/" + file
+    filepath = video_folder_path + "/" + file
     
-    filepath = file
+   # filepath = file
     
     cap = cv2.VideoCapture(filepath)
         
@@ -122,6 +122,9 @@ for file in filenames2:
             if counter > (length / 2) - (bedge_size/2) and counter < (length/2) + (bedge_size/2):
                                 
                 # Start analysing the frames
+                
+                print frame
+                print type(frame)
                 
                 #### CROP IMAGE ####
                 # Here we crop the black frame from the images
@@ -173,8 +176,9 @@ for file in filenames2:
         
         else:
             break
+        
        
-    
+    break
     # When video has been processed then release the capture
     cap.release()
     cv2.destroyAllWindows()
@@ -182,7 +186,7 @@ for file in filenames2:
     
     # ------------------------ TESTING -------------------------------
     
-    print (frames_lsh)
+   # print (frames_lsh)
 
     # ------------------ FEATURE HASHING -----------------------------
     # initialize the feature hashing matrix
@@ -215,7 +219,7 @@ print ("\n#################### SIMILARITY ######################")
        
 print ("\n#################### TESTING RESULT ######################")       
        
-test_result = False      
+test_result = True      
       
 if test_result:        
        
