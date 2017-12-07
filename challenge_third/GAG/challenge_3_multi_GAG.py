@@ -26,13 +26,12 @@ from sklearn.preprocessing import StandardScaler
 from itertools import cycle, islice
 
 
-
-video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/videos"
-#video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/more_than_twenty"
-
-
-
 ###################### FUNCTIONS ###############################
+# Function that takes in a file pathm pre processes the frames of the video and then calculates 
+# a local sensitive hashing for each frame, resulting in a list of LSH values. 
+# The lsh values list/vector is then feature hashed into a vector of size N.
+# The function returns the resulting feature hash vector as well as the imageid
+
 def process_video (filepath):
     reader = imageio.get_reader(filepath)
     
@@ -44,11 +43,7 @@ def process_video (filepath):
     # Get image id
     image_id = filepath.split("/")[-1].split(".")[0]
     
-    
-    #print("--------------------------------------")
-    #print( "Video frame length: {}".format(length) )
-    #print "File name: {} ".format(image_id)
-    
+
     
     for counter, frame in enumerate(reader):
         
@@ -60,14 +55,11 @@ def process_video (filepath):
             
             #------------------------- CROP IMAGE ----------------------------------#
             # Here we crop the black frame from the images
-            # There are two different cases, either a portreit image of a landscape image3
+            # There are two different cases, either a portrait image of a landscape image3
             
             height = np.size(frame, 0)
             width = np.size(frame, 1)
-            
-           # print("height : {}".format(height))
-           # print("width : {}".format(width))
-            
+                        
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
         
         
@@ -89,26 +81,19 @@ def process_video (filepath):
         
             #------------------ Histogram normalization ------------------------------#
             
-            #clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-            # gray = clahe.apply(gray)
             gray = cv2.equalizeHist(gray)
             
             #---------------------- LOCALITY SENSITIVE HASHING ----------------------------------#
-            
-            #gray = cv2.resize(gray,(pxls,pxls))
                     
             image_hash = str(imagehash.average_hash( Image.fromarray(gray), hash_size = 4))        
             frames_lsh.append(image_hash)
-        
-        
-    #print(frames_lsh)
         
     
     # ------------------ FEATURE HASHING -----------------------------
     # initialize the feature hashing matrix
     N = 600 # number of buckets
     
-    
+    # Create the feature hashing vector
     feature_hash_vector = np.zeros(N)
     
     for hash_str in frames_lsh:
@@ -118,21 +103,19 @@ def process_video (filepath):
     
     return image_id, feature_hash_vector
 
-
-########################### STARTING ###########################
-print ("\n#################### STARTING ######################")
+print ("\n-------------------- STARTING -----------------------")
      
+video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/videos"
 
 t1 = time.time()
 
 #for file in filenames: 
 filepaths =  [video_folder_path + "/" + file  for file in os.listdir(video_folder_path)]
     
-#
+# Use the mutliprocessing to process each video
 p = Pool(8)
 results = p.map(process_video,filepaths,chunksize=1)
 p.close()
-
 
 
 t2 = time.time()
@@ -141,16 +124,9 @@ print("Execution time - First part : {}".format(t2-t1))
     
 ######################### ANALYSE THE RESULT ###################################
            
-print ("\n#################### SIMILARITY ######################")
-       
-
-#func.find_hamming_distances(results)
-#func.find_cosine_similarity(results)
-
-######################### CALCULATE RAND INDEX ###################################
 
        
-print ("\n#################### TESTING RESULT ######################")       
+print ("\n-------------------- TESTING RESULT --------------------------")       
        
 test_result = True      
 
@@ -203,6 +179,9 @@ if test_result:
         for label, video in video_and_label_spectral:
             clusters[label].add(video)
             
+        t3 = time.time()
+        print("Execution time before validation: {}".format(t3-t1))     
+
         rand_index_result = rand_index_validation.rand_index(clusters.values())
         
         print(rand_index_result)
@@ -260,9 +239,9 @@ if test_result:
     #    print "rand index: {}".format(rand_index(clusters))
     #    print
 
-t3 = time.time()
+t4 = time.time()
 
-print("Execution time : {}".format(t3-t1))
+print("Execution time : {}".format(t4-t1))
     
     
     

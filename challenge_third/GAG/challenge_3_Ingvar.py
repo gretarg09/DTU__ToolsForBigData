@@ -40,7 +40,7 @@ def process_video (filepath):
     length = len(reader)
     frames_lsh = []
     image_id = filepath.split("/")[-1].split(".")[0]
-    divider = 10
+    divider = 15
     modulus = 1
     
     # Iterate over the frames of the video
@@ -68,7 +68,6 @@ def process_video (filepath):
             height = np.size(frame, 0)
             width = np.size(frame, 1)
             
-            
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
         
         
@@ -92,7 +91,7 @@ def process_video (filepath):
         
         
             # --------- Locality Sensitive Hashing -------------
-            image_hash = str(imagehash.average_hash( Image.fromarray(gray), hash_size = 7))        
+            image_hash = str(imagehash.average_hash( Image.fromarray(gray), hash_size = 5))        
             frames_lsh.append(image_hash)
 
         
@@ -182,6 +181,7 @@ if __name__ == '__main__':
                                     n_clusters=n_clusters, 
                                     eigen_solver='arpack',
                                     affinity="nearest_neighbors", 
+                                    n_init = 20,
                                     assign_labels = 'discretize').fit(data)
         
             
@@ -191,6 +191,9 @@ if __name__ == '__main__':
             
             for label, video in video_and_label_spectral:
                 clusters[label].add(video)
+
+            t3 = time.time()
+            print("Execution time before validation: {}".format(t3-t1))  
                 
             rand_index_result = rand_index_validation.rand_index(clusters.values())
             
@@ -241,10 +244,9 @@ if __name__ == '__main__':
             print(rand_index_result)
         
     
-    t3 = time.time()
-    
-    print("Execution time : {}".format(t3-t1))
-        
+    t4 = time.time()
+
+    print("Execution time : {}".format(t4-t1))        
     
     
  
