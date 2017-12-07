@@ -85,8 +85,8 @@ filenames3 = [ "/Users/GretarAtli/Dropbox/ToolsForBigData/ur2/SKGL1C7462UE.mp4",
 #             "/Users/GretarAtli/Dropbox/ToolsForBigData/ur3/SPV675U9WWK7.mp4"]
 
 
-#video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/videos"
-video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/more_than_twenty"
+video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/videos"
+#video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/more_than_twenty"
 #video_folder_path = "/Users/GretarAtli/Dropbox/ToolsForBigData/minor_videos"
 
 
@@ -209,7 +209,7 @@ print ("\n#################### TESTING RESULT ######################")
        
 test_result = True      
 
-n_clusters = 21
+n_clusters = 970
 
 if test_result:        
        
@@ -310,7 +310,9 @@ if test_result:
     #    print "rand index: {}".format(rand_index(clusters))
     #    print
 
-    
+t3 = time.time()
+
+print("Execution time : {}".format(t3-t2))
     
     
     
