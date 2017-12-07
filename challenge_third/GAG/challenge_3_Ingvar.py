@@ -98,7 +98,7 @@ def process_video (filepath):
     # ------------------ FEATURE HASHING -----------------------------
     
     # initialize the feature hashing vector
-    N = 600 # number of buckets
+    N = 610 # number of buckets
     feature_hash_vector = np.zeros(N)
     
     # Create the feature hashing vector
@@ -193,11 +193,11 @@ if __name__ == '__main__':
                 clusters[label].add(video)
 
             t3 = time.time()
-            print("Execution time before validation: {}".format(t3-t1))  
+            print("\nExecution time before validation: {}".format(t3-t1))  
                 
             rand_index_result = rand_index_validation.rand_index(clusters.values())
             
-            print(rand_index_result)
+            print("\nResulting Rand Index: {}".format(rand_index_result))
         
         
         
@@ -246,7 +246,7 @@ if __name__ == '__main__':
     
     t4 = time.time()
 
-    print("Execution time : {}".format(t4-t1))        
+    print("\nExecution time : {}".format(t4-t1))        
     
     
  
